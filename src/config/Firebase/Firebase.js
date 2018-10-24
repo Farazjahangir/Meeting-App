@@ -12,6 +12,14 @@ firebase.initializeApp(config);
 const db = firebase.firestore();
 const storageRef = firebase.storage().ref()
 let urls = []
+let userUid;
+
+
+firebase.auth().onAuthStateChanged(function(user) {
+    userUid = user.uid;
+    console.log("UID" , userUid);
+});
+
 
 const loginWithFirebase = () => {
   var provider = new firebase.auth.FacebookAuthProvider();
@@ -26,28 +34,33 @@ const loginWithFirebase = () => {
 }
 
 
-const profileSaveToFirebase = (data) => {
-  
-  return new Promise ((resolve , reject)=>{
+const profileSaveToFirebase = async (data) => {
     for(var i =0; i < data.imgUrls.length; i++){
-      let name = `${Date.now()} - ${i}`
+      let name = `${Date.now()} - ${userUid}`
       let message = data.imgUrls[i]
-      console.log("IMAGES" , message);
-      storageRef
-        .child(name)
-        .putString(message, 'data_url')
-          .then(()=>{
-            storageRef
-            .child(name)
-            .getDownloadURL()
-              .then((url)=>{
-                urls.push(url)
-                console.log("URL" , urls);
-                
-              })
-          })
+      await storageRef.child(name).putString(message, 'data_url')
+      const url = await storageRef.child(name).getDownloadURL();
+      console.log("url -->", url)
+      urls.push(url)
     }
-  })
+
+    console.log("data.coords -->", data.coords)
+
+    return new Promise((resolve , reject)=>{
+      db.collection("Users").doc(userUid).set({
+        Nickname : data.nickName,
+        ContactNumber : data.contactNum,
+        Bevarages : data.bevarages,
+        MeetingTime : data.meetingTime,
+        Coords : data.coords,
+        UserImages : urls
+      }).then((result)=>{
+        resolve(result)
+      }).catch((err)=>{
+          console.log(err);
+          
+      })
+    })
 
 }
 

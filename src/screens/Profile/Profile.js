@@ -22,7 +22,7 @@ class Profile extends Component {
       contactNum : '',
       bevarages : [],
       meetingTime : [],
-      coords : null
+      coords : {latitude : 24.946218 , longitude : 67.005615}
       
     }
     this.nextStep = this.nextStep.bind(this)
@@ -86,7 +86,8 @@ componentDidUpdate(){
     const { coords } = this.state
     
     navigator.geolocation.getCurrentPosition((position)=>{
-      this.setState({coords: position.coords})     
+      // this.setState({coords: position.coords})     
+      this.setState({coords: {latitude : position.coords.latitude , longitude : position.coords.longitude}})     
     })
   }
 
@@ -96,16 +97,56 @@ componentDidUpdate(){
   }
 
   setUpProfile(){
-    profileSaveToFirebase(this.state)
+    profileSaveToFirebase(this.state).then(()=>{
+      console.log('UPLOADED');
+      
+    })
   }
 
 
 
   render() {
-    const { steps , imgUrls , nickName , contactNum , bevarages , coords } = this.state
+    const { steps,
+            imgUrls, 
+            nickName, 
+            contactNum, 
+            bevarages, 
+            coords,
+            meetingTime
+          } = this.state
     return (
       <div>
         <Header />
+
+
+
+
+
+      <div className="custom-loader">
+        <h1 className="loader">
+        <span class="let1">S</span>  
+        <span class="let2">A</span>  
+        <span class="let3">V</span>  
+        <span class="let4">I</span>  
+        <span class="let5">N</span>  
+        <span class="let6">G</span>  
+        </h1>
+
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <div className="container-fluid">
           <div className="rc-steps">
             <Steps labelPlacement="vertical" current={steps} >
@@ -159,37 +200,51 @@ componentDidUpdate(){
           {steps===2 && 
             <div>
                 <div>
-                  <h3 className="text-center">What Do You Prefer</h3>
+                  <h3 className="text-center font-1 mt-1">What Do You Prefer</h3>
                 </div>
-                <div className="row my-5">
-                  <div className="col-md-4 col-sm-6 col-12">
+                <div className="row">
+                  <div className="col-md-4 col-sm-6 col-12 my-5">
                     <img src={coffee} value="Coffee" width="100%" height="300px" className={bevarages.includes('coffee') ? "bevarages selected" : "bevarages"} onClick={()=>{this.selectBev('coffee')}} />
                     <h3 className="text-center">Coffee</h3>
                   </div>
-                  <div className="col-md-4 col-sm-6 col-12">
+                  <div className="col-md-4 col-sm-6 col-12 my-5">
                     <img src={juice} width="100%" height="300px" className={bevarages.includes('juice') ? "bevarages selected" : "bevarages"} onClick={()=>{this.selectBev('juice')}} />
                     <h3 className="text-center">Juice</h3>                    
                   </div>
-                  <div className="col-md-4 col-sm-6 col-12">
+                  <div className="col-md-4 col-sm-6 col-12 my-5">
                     <img src={cocktail} width="100%" height="300px" className={bevarages.includes('cocktail') ? "bevarages selected" : "bevarages"} onClick={()=>{this.selectBev('cocktail')}} />
                     <h3 className="text-center">cocktail</h3>                    
                   </div>
                 </div>
 
-                <h3>Duration For Meeting</h3>
-                <div className="form-check-inline">
-                  <label htmlFor="opt1" className="form-check-label"></label>
-                  <input type="checkbox" id="opt1" onClick={()=>{this.selectedTime("30min")}} />30min
+
+                <h3 className="text-center font-1 mt-1">Duration For Meeting</h3>
+                <div className="row my-5">
+
+                  <div className="col-md-4 col-sm-6 col-12 my-3">
+                    <div className={meetingTime.includes('120min') ? "text-center meeting-time-box selected-time" : "text-center meeting-time-box"} onClick={()=>{this.selectedTime("120min")}}>
+                      <h1>120</h1>
+                      <h3>Minutes</h3>
+                    </div>
+                  </div>
+
+                  <div className="col-md-4 col-sm-6 col-12 my-3"> 
+                    <div className={meetingTime.includes('60min') ? "text-center meeting-time-box selected-time" : "text-center meeting-time-box"} onClick={()=>{this.selectedTime("60min")}}>
+                      <h1>60</h1>
+                      <h3>Minutes</h3>
+                    </div>
+                  </div>
+
+                  <div className="col-md-4 col-sm-6 col-12 my-3">
+                    <div className={meetingTime.includes('30min') ? "text-center meeting-time-box selected-time" : "text-center meeting-time-box"} onClick={()=>{this.selectedTime("30min")}}>
+                      <h1>30</h1>
+                      <h3>Minutes</h3>
+                    </div>
+                  </div>
+
                 </div>
-                <div className="form-check-inline">
-                  <label htmlFor="opt2" className="form-check-label"></label>
-                  <input type="checkbox" id="opt2" onClick={()=>{this.selectedTime("60min")}} />60min
-                </div>
-                <div className="form-check-inline">
-                  <label htmlFor="opt3" className="form-check-label"></label>
-                  <input type="checkbox" id="opt3" onClick={()=>{this.selectedTime("120min")}} />120min
-                </div>
-                
+
+
               </div>
           }
 
@@ -212,12 +267,14 @@ componentDidUpdate(){
           </div>
         }
 
-            <div className>
-             {steps !== 0 && <div>
+            <div className="d-flex justify-content-between">
+             {steps !== 0 && steps < 3 &&
+             <div className="my-5">
                 <input type="button" value="Back" className="btn btn-success" onClick={this.prevStep} />
               </div>
              }
-              {steps !== 3 && <div className="text-right my-5 mx-5">
+              {steps !== 3 && 
+              <div className="text-right my-5 mx-5">
                 <input type="button" value="Next" className="btn btn-success" onClick={this.nextStep} />
               </div>}
             </div>
