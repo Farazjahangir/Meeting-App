@@ -1,0 +1,37 @@
+.bg{
+    background: url('../../images/bg.jpg');
+    height: 100vh;
+    filter: brightness(70%) blur(2.5px);
+    background-size: cover;
+}
+.homepage-content{
+    position: absolute;
+    top: 50%;
+    left : 50%;
+    transform: translate(-50% , -50%);
+    text-align: center;
+    width: 100%;
+}
+.homepage-content h1{
+    font-size: 2em;
+    color: white;
+}
+.homepage-content h2{
+    font-size: 1.6em;
+    color: white;
+}
+.login-btn{
+    color: white;
+    background: #4267b2;
+}
+
+@media (max-width: 550px){
+    .homepage-content h1{
+        font-size: 1.9em;
+        color: white;
+    }
+    .homepage-content h2{
+        font-size: 1.6em;
+        color: white;
+    }    
+}

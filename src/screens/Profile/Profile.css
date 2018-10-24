@@ -1,0 +1,33 @@
+.rc-steps{
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 22px;
+}
+.step-1{
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 30px;
+}
+.img-div{
+    width: 230px;
+    height: 230px;
+    background: rgba(211, 211, 211, 0.6);
+}
+.img-upload{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50% , -50%);
+    opacity: 0;
+    cursor: pointer;
+}
+.bevarages:hover{
+    border: 2px solid lightgray;
+    cursor: pointer;
+}
+.selected{
+    opacity: 0.4;
+}
+.center-div{
+    margin: 0 auto;
+}
