@@ -22,7 +22,8 @@ class Profile extends Component {
       contactNum : '',
       bevarages : [],
       meetingTime : [],
-      coords : {latitude : 24.946218 , longitude : 67.005615}
+      coords : {latitude : 24.946218 , longitude : 67.005615},
+      finished : false
       
     }
     this.nextStep = this.nextStep.bind(this)
@@ -97,8 +98,10 @@ componentDidUpdate(){
   }
 
   setUpProfile(){
+    this.setState({finished : true})
     profileSaveToFirebase(this.state).then(()=>{
       console.log('UPLOADED');
+      this.setState({finished : false})
       
     })
   }
@@ -112,17 +115,14 @@ componentDidUpdate(){
             contactNum, 
             bevarages, 
             coords,
-            meetingTime
+            meetingTime,
+            finished
           } = this.state
     return (
       <div>
         <Header />
 
-
-
-
-
-      <div className="custom-loader">
+      <div className={finished ? "custom-loader" : "none"}>
         <h1 className="loader">
         <span class="let1">S</span>  
         <span class="let2">A</span>  
@@ -134,20 +134,7 @@ componentDidUpdate(){
 
       </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <div className="container-fluid">
+        <div className={finished ? "container-fluid opacity-1" : "container-fluid"}>
           <div className="rc-steps">
             <Steps labelPlacement="vertical" current={steps} >
               <Step />
@@ -157,14 +144,14 @@ componentDidUpdate(){
             </Steps>
           </div>
           {steps === 0 &&
-            <form className="step-1">
+            <div className="step-1">
               <div className="form-group">
-                <input type="text" value={nickName} placeholder="Enter Your Nick Name" className="form-control" onChange={(e)=>{this.setState({nickName : e.target.value})}} />
+                <input type="text" value={nickName} placeholder="Enter Your Nick Name" className="form-control" onChange={(e)=>{this.setState({nickName : e.target.value})}} required />
               </div>
               <div className="form-group">
-                <input type="number" value={contactNum} placeholder="Your Contact Number" className="form-control" onChange={(e)=>{this.setState({contactNum : e.target.value})}} />
+                <input type="number" value={contactNum} placeholder="Your Contact Number" className="form-control" onChange={(e)=>{this.setState({contactNum : e.target.value})}} required />
               </div>
-            </form>
+            </div>
           }
           {steps === 1 &&
             <div className="row my-5">

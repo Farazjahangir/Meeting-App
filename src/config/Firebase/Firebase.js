@@ -47,7 +47,7 @@ const profileSaveToFirebase = async (data) => {
     console.log("data.coords -->", data.coords)
 
     return new Promise((resolve , reject)=>{
-      db.collection("Users").doc(userUid).set({
+      db.collection("users").doc(userUid).set({
         Nickname : data.nickName,
         ContactNumber : data.contactNum,
         Bevarages : data.bevarages,
@@ -64,7 +64,22 @@ const profileSaveToFirebase = async (data) => {
 
 }
 
+const checkingUser = () =>{
+  return new Promise((resolve , reject)=>{
+    var docRef = db.collection("users").doc(userUid);
+    docRef.get().then(function(doc) {
+      console.log("DOC" , doc);
+       resolve(doc) 
+    })
+    .catch(function(error) {
+        console.log("Error getting document:", error);
+    });
+
+  })
+}
+
 export {
   loginWithFirebase,
-  profileSaveToFirebase
+  profileSaveToFirebase,
+  checkingUser
 }

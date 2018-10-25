@@ -53,18 +53,25 @@
 .mt-1{
     margin-top: 40px!important;
 }
+.none{
+    display: none;
+}
 .custom-loader{
     position: fixed;
     left: 50%;
-    transform: translateX(-50%)
+    transform: translateX(-50%);
+    z-index : 1000;
+}
+.opacity-1{
+    filter: brightness(30%) blur(2px);
 }
 .loader{
     margin: 0;
     padding: 0;
     font-family: ‘Arial Narrow’, sans-serif;
-    font-weight: 100;
-    font-size: 3.1em;
-    color: #a3e1f0;
+    font-weight: 400;
+    font-size: 3.7em;
+    color: rgb(255, 107, 107 , 0.9);
   }
   
   span {
