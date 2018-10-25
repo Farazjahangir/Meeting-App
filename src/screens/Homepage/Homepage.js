@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './Homepage.css'
-import {loginWithFirebase} from '../../config/Firebase/Firebase'
+import {loginWithFirebase , checkingUser} from '../../config/Firebase/Firebase'
 import { Link } from "react-router-dom";
 
 class Homepage extends Component {
@@ -13,7 +13,17 @@ class Homepage extends Component {
     login(){
       loginWithFirebase()
       .then((user)=>{
-        this.props.history.replace("/profile")
+        console.log('USER' , user);
+        
+        checkingUser()
+        .then((doc)=>{
+            if(doc.exists){
+              this.props.history.replace("/dashboard")
+            }
+            else{
+              this.props.history.replace("/profile")
+            }          
+        })
       })
     }
     
