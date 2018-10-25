@@ -1,0 +1,12 @@
+.users-div{
+    margin: 0 auto;
+    width: 900px;
+    overflow: visible;
+}
+.users-div img{
+    width: 100%;
+    height: inherit;
+}
+.master-root{
+    width: 800px!important;
+}

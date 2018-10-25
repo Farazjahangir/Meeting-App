@@ -100,6 +100,7 @@ componentDidUpdate(){
   setUpProfile(){
     this.setState({finished : true})
     profileSaveToFirebase(this.state).then(()=>{
+      this.props.history.push('/dashboard')
       console.log('UPLOADED');
       this.setState({finished : false})
       

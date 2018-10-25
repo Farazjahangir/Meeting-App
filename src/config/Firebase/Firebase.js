@@ -12,13 +12,7 @@ firebase.initializeApp(config);
 const db = firebase.firestore();
 const storageRef = firebase.storage().ref()
 let urls = []
-let userUid;
 
-
-firebase.auth().onAuthStateChanged(function(user) {
-    userUid = user.uid;
-    console.log("UID" , userUid);
-});
 
 
 const loginWithFirebase = () => {
@@ -35,6 +29,7 @@ const loginWithFirebase = () => {
 
 
 const profileSaveToFirebase = async (data) => {
+  const userUid = firebase.auth().currentUser.uid;
     for(var i =0; i < data.imgUrls.length; i++){
       let name = `${Date.now()} - ${userUid}`
       let message = data.imgUrls[i]
@@ -65,6 +60,7 @@ const profileSaveToFirebase = async (data) => {
 }
 
 const checkingUser = () =>{
+  const userUid = firebase.auth().currentUser.uid;
   return new Promise((resolve , reject)=>{
     var docRef = db.collection("users").doc(userUid);
     docRef.get().then(function(doc) {
@@ -78,8 +74,21 @@ const checkingUser = () =>{
   })
 }
 
+const getUserData = () =>{
+  
+  const userUid = firebase.auth().currentUser.uid;
+  console.log("current user -->", firebase.auth().currentUser);
+  return new Promise((resolve , reject)=>{
+    db.collection("users").doc(userUid).get().then((doc)=>{
+      resolve(doc.data())      
+    })
+  })
+}
+
 export {
+  firebase,
   loginWithFirebase,
   profileSaveToFirebase,
-  checkingUser
+  checkingUser,
+  getUserData,
 }
