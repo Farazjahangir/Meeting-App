@@ -1,0 +1,83 @@
+{
+  "_from": "react-swipe-deck@^0.1.17",
+  "_id": "react-swipe-deck@0.1.17",
+  "_inBundle": false,
+  "_integrity": "sha512-8NiyjeUCk41PktYxcGbv4i2Ak49CgfA3ysDvNDFNjwqrqINRvCOboowXX/MXk33Cdy521XbOVoStNBLa/HqkZQ==",
+  "_location": "/react-swipe-deck",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "react-swipe-deck@^0.1.17",
+    "name": "react-swipe-deck",
+    "escapedName": "react-swipe-deck",
+    "rawSpec": "^0.1.17",
+    "saveSpec": null,
+    "fetchSpec": "^0.1.17"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/react-swipe-deck/-/react-swipe-deck-0.1.17.tgz",
+  "_shasum": "5385381e6149a6ba5134f08ccb18c3a997494238",
+  "_spec": "react-swipe-deck@^0.1.17",
+  "_where": "/home/faraz/Documents/React/meeting-app",
+  "author": {
+    "name": "Swapnil Singh",
+    "email": "mail@swapnilsingh.me"
+  },
+  "bugs": {
+    "url": "https://github.com/swapkats/react-swipe-deck/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "babel-cli": "^6.18.0",
+    "hammerjs": "^2.0.8",
+    "react": "^16.0.1",
+    "react-dom": "^16.0.1"
+  },
+  "deprecated": false,
+  "description": "Tinder style swipe deck",
+  "devDependencies": {
+    "@kadira/storybook-deployer": "^1.2.0",
+    "@storybook/react": "3.2.17",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "babel-preset-stage-0": "^6.3.13",
+    "conventional-changelog": "^1.1.0",
+    "conventional-changelog-cli": "^1.2.0",
+    "release-it": "^2.5.3",
+    "superheroes": "^1.0.0"
+  },
+  "homepage": "https://github.com/swapkats/react-swipe-deck#readme",
+  "keywords": [
+    "react",
+    "tinder",
+    "cards",
+    "swipe"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "react-swipe-deck",
+  "peerDependencies": {
+    "react": "16.x",
+    "react-dom": "16.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/swapkats/react-swipe-deck.git"
+  },
+  "scripts": {
+    "build": "rm -rf dist && mkdir dist && babel -d dist src",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
+    "copy:package": "cp -R package.json dist/",
+    "copy:readme": "cp -R README.md dist/",
+    "deploy-storybook": "storybook-to-ghpages",
+    "npm:publish": "npm run build && npm run release && npm run copy:readme && npm run copy:package && cd dist && npm publish && cd .. && npm run deploy-storybook",
+    "release": "npm run changelog && npm run rilize -- --non-interactive",
+    "rilize": "$(npm bin)/release-it --github.releaseName=\"%s (`$(npm bin)/superheroes`)\"",
+    "start": "start-storybook -p 9001 -c .storybook"
+  },
+  "version": "0.1.17"
+}

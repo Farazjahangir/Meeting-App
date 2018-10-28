@@ -4,13 +4,13 @@
   "private": true,
   "dependencies": {
     "firebase": "^5.5.4",
+    "hammerjs": "^2.0.8",
     "rc-steps": "^3.3.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-google-maps": "^9.4.5",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "2.0.4",
-    "react-swipe-deck": "^0.1.17"
+    "react-scripts": "2.0.4"
   },
   "scripts": {
     "start": "react-scripts start",
