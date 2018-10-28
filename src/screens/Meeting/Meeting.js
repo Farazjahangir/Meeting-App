@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import swal from 'sweetalert';
+
 import './Meeting.css'
 import Header from '../../component/Header/Header'
 import Cards, { Card } from '../../lib/react-swipe-deck'
@@ -40,6 +42,8 @@ class Meeting extends Component {
           this.setState({users : true})
           getOtherUsers(userData)
           .then((matchedUsers)=>{
+            console.log(matchedUsers);
+            
             let { matchedUsersArr } = this.state
             this.setState({matchedUsersArr : [...matchedUsersArr , ...matchedUsers]})         
           })
@@ -49,37 +53,39 @@ class Meeting extends Component {
     }
   })
 }
-  next(){
-    const { index } = this.state
-    this.setState({index : index + 1})
+  meet(item){
+    this.setState({
+      dotSelect1 : true,
+      dotSelect2 : false,
+      dotSelect3 : false,
+      index : 0,
+      meet : true
+    })
+    swal(`You Liked ${item.Nickname}` ,`you wanna meet ${item.Nickname}` , "success",{
+      buttons : ['No' , 'Meet']
+    })
+    .then((value)=>{
+      if(value){
+        this.props.history.push('/meetingpoint', {data: item})
+      }
+      
+    })
+    
   }
-    action(direction){
-        if(direction == 'right'){
-          console.log("right");
-          this.setState({
-            dotSelect1 : true,
-            dotSelect2 : false,
-            dotSelect3 : false,
-            index : 0,
-            meet : true
-          })
-          setTimeout(()=>{
-          this.setState({meet : false})
-          },800)
-        }        
-        if(direction == 'left'){
-          this.setState({
-            dotSelect1 : true,
-            dotSelect2 : false,
-            dotSelect3 : false,
-            index : 0,
-            reject : true
-          })
-          setTimeout(()=>{
-            this.setState({reject : false})
-            },800)  
-        }
-    }
+
+  reject(){
+    this.setState({
+      dotSelect1 : true,
+      dotSelect2 : false,
+      dotSelect3 : false,
+      index : 0,
+      reject : true
+    })
+    setTimeout(()=>{
+      this.setState({reject : false})
+      },800)  
+  }
+
     userEnd(){
       console.log("END");
       this.setState({end : true})
@@ -97,33 +103,40 @@ class Meeting extends Component {
     
     return (
       <div>
-        <Header />
-        <Cards onEnd={()=>{this.userEnd()}}  className={'master-root'} >
-        {matchedUsersArr.map(item =>
-          <Card
-            onSwipeLeft={()=>{this.action('left')}} 
-            onSwipeRight={()=>{this.action('right')}}>
-            <div className="users-div">
-            <div class="decision text-right">
-              <p className={meet ? 'meet visible' : 'meet'}>Meet</p>
-              <p className={reject ? 'reject visible' : 'reject' }>Reject</p>
-            </div>
-                  <img src={item.UserImages[index]} />
-                  <div class="dot-div">
-                    {!dotSelect1 && <img src={dot} onClick={()=>{this.setState({index: 0 , dotSelect1 : true , dotSelect2 : false , dotSelect3 : false})}} />}
-                    {dotSelect1 && <img src={dot1}  />}
-                    {!dotSelect2 && <img src={dot} onClick={()=>{this.setState({index: 1 , dotSelect2 : true , dotSelect1 : false , dotSelect3 : false})}} />}
-                    {dotSelect2 && <img src={dot1} />}
-                    {!dotSelect3 && <img src={dot} onClick={()=>{this.setState({index: 2 , dotSelect3 : true , dotSelect2 : false , dotSelect1 : false})}} />}
-                    {dotSelect3 && <img src={dot1} />}
-                  </div>
-                  <h4 className="username">{item.Nickname}</h4>
-            </div>
-          </Card>
-        )}
-      </Cards>
-        {end && <h2 class="end">No More Match Users Found</h2>}
-        <button onClick={()=>{this.next()}}>NEXT</button>
+        <div>
+          
+        </div>
+        <div>
+          <Header />
+          <div>
+
+          </div>
+          {/* <div class="decision text-right">
+            <p className={meet ? 'meet visible' : 'meet'}>Meet</p>
+            <p className={reject ? 'reject visible' : 'reject' }>Reject</p>
+          </div> */}
+          <Cards onEnd={()=>{this.userEnd()}}  className={'master-root'} >
+          {matchedUsersArr.map(item =>
+            <Card
+              onSwipeLeft={()=>{this.reject()}} 
+              onSwipeRight={()=>{this.meet(item)}}>
+              <div className="users-div">
+                    <img src={item.UserImages[index]} />
+                    <div class="dot-div">
+                      {!dotSelect1 && <img src={dot} onClick={()=>{this.setState({index: 0 , dotSelect1 : true , dotSelect2 : false , dotSelect3 : false})}} />}
+                      {dotSelect1 && <img src={dot1}  />}
+                      {!dotSelect2 && <img src={dot} onClick={()=>{this.setState({index: 1 , dotSelect2 : true , dotSelect1 : false , dotSelect3 : false})}} />}
+                      {dotSelect2 && <img src={dot1} />}
+                      {!dotSelect3 && <img src={dot} onClick={()=>{this.setState({index: 2 , dotSelect3 : true , dotSelect2 : false , dotSelect1 : false})}} />}
+                      {dotSelect3 && <img src={dot1} />}
+                    </div>
+                    <h4 className="username">{item.Nickname}</h4>
+              </div>
+            </Card>
+          )}
+        </Cards>
+          {end && <h2 class="end">No More Match Users Found</h2>}
+        </div>
       </div>
     )
   }

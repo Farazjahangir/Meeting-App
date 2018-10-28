@@ -16,7 +16,7 @@
     width: 15px;
     height: 15px;
     position: absolute;
-    top: 63%;
+    top: 50%;
     left: 45%;
     transform: translate(-50% , -50%);
 }
@@ -32,15 +32,18 @@
     justify-content: space-between;
     width: 100%;
     color: red;
-    visibility: hidden;
 }
 .meet{
-    border: 2px solid green;
+    border: 2px solid rgba(0, 128, 0, 0.6);
     padding: 5px;
-    width: 60px;
     color: white;
     font-weight : bold;
-    background: green;
+    background: rgba(0, 128, 0, 0.6);
+    margin: 0 auto;
+    width: 250px;
+    margin-top: 20px;
+    
+    text-align: center;
 }
 .reject{
     border: 2px solid red;
@@ -49,6 +52,7 @@
     color: white;
     font-weight : bold;
     background: red;
+    visibility: hidden;
 }
 .visible{
     visibility: visible;
