@@ -50,7 +50,8 @@ const profileSaveToFirebase = async (data) => {
       Bevarages: data.bevarages,
       MeetingTime: data.meetingTime,
       Coords: data.coords,
-      UserImages: urls
+      UserImages: urls,
+      userUid
     }).then((result) => {
       resolve(result)
     }).catch((err) => {
@@ -123,6 +124,8 @@ const getOtherUsers = (data) => {
   })
   
 }
+
+
 export {
   firebase,
   loginWithFirebase,
