@@ -5,6 +5,7 @@ import  Profile  from "../screens/Profile/Profile";
 import  Dashboard  from "../screens/Dashboard/Dashboard";
 import  Meeting  from "../screens/Meeting/Meeting";
 import  Meetingpoint  from "../screens/Meetingpoint/Meetingpoint";
+import  Meetingtime  from "../screens/Meetingtime/Meetingtime";
 
 
 
@@ -17,6 +18,7 @@ const Routes = () =>{
                 <Route  path="/dashboard" component={Dashboard} />
                 <Route  path="/meeting" component={Meeting} />
                 <Route  path="/meetingpoint" component={Meetingpoint} />
+                <Route  path="/meetingtime" component={Meetingtime} />
             </div>
         </Router>
     )

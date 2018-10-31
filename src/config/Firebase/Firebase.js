@@ -1,6 +1,5 @@
 // Initialize Firebase
 import * as firebase from 'firebase'
-import { Z_BEST_COMPRESSION } from 'zlib';
 var config = {
   apiKey: "AIzaSyDIdqxcaG3r22eBpexZRIABd1wdrq0xGdo",
   authDomain: "meeting-app1.firebaseapp.com",
@@ -29,6 +28,16 @@ const loginWithFirebase = () => {
   })
 }
 
+const logOut = () =>{
+  return new Promise((resolve , reject)=>{
+    firebase.auth().signOut().then(function() {
+     resolve()
+    }).catch(function(error) {
+     console.log(error);
+    });
+
+  })
+}
 
 const profileSaveToFirebase = async (data) => {
   const userUid = firebase.auth().currentUser.uid;
@@ -129,6 +138,7 @@ const getOtherUsers = (data) => {
 export {
   firebase,
   loginWithFirebase,
+  logOut,
   profileSaveToFirebase,
   checkingUser,
   getUserData,

@@ -14,11 +14,9 @@
     background: rgba(211, 211, 211, 0.6);
 }
 .img-upload{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50% , -50%);
-    opacity: 0;
+    display: none;  
+}
+.img-label{
     cursor: pointer;
 }
 .bevarages:hover{

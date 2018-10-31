@@ -7,6 +7,7 @@
     "hammerjs": "^2.0.8",
     "rc-steps": "^3.3.0",
     "react": "^16.5.2",
+    "react-calendar": "^2.17.5",
     "react-dom": "^16.5.2",
     "react-google-maps": "^9.4.5",
     "react-router-dom": "^4.3.1",

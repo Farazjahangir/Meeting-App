@@ -9,6 +9,8 @@ class Dashboard extends Component {
     }
 
     setMeeting(){
+      console.log(this.props);
+      
         this.props.history.push('/meeting')
     }
   render() {

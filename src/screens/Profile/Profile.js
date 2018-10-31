@@ -17,7 +17,7 @@ class Profile extends Component {
     super()
     this.state = {
       steps: 0,
-      imgUrls : [],
+      imgUrls : [null , null , null],
       nickName : '',
       contactNum : '',
       bevarages : [],
@@ -43,13 +43,17 @@ class Profile extends Component {
     this.setState({ steps: steps - 1 })
   }
 
-  handleImg(e){
+  handleImg(e , a){
+    console.log('sdsd' , a);
+    
     const { imgUrls , imgArr } = this.state    
       let reader = new FileReader();
       reader.onload = (e) => {
           let urlImg = e.target.result;
+          imgUrls[a] = urlImg
           this.setState({
-            imgUrls: [...imgUrls , urlImg]
+            // imgUrls: [...imgUrls , urlImg]
+            imgUrls: imgUrls
           })
       };
       reader.readAsDataURL(e.target.files[0]);
@@ -119,6 +123,8 @@ componentDidUpdate(){
             meetingTime,
             finished
           } = this.state
+          console.log(imgUrls);
+          
     return (
       <div>
         <Header />
@@ -158,28 +164,34 @@ componentDidUpdate(){
             <div className="row my-5">
               <div className="col-md-4 col-sm-6 col-12 center-div my-2">
                 <div className="img-div d-flex align-items-center justify-content-center">
-                  <div>
-                      {imgUrls.length >= 1 && <img src={imgUrls[0]} width="230" height="230px" />}
-                      {imgUrls.length===0 && <img src={plusIcon} width="70px" />}
-                        <input type="file" className="img-upload" onChange={this.handleImg} />
+                  <div className="text-center">
+                      {imgUrls[0] && <img src={imgUrls[0]} width="230" height="230px" />}
+                      {!imgUrls[0] && <label htmlFor="img1" className="img-label">
+                        <img src={plusIcon} width="70px" />
+                      </label>}
+                        <input id="img1" type="file" className="img-upload" onChange={(e)=>{this.handleImg(e ,0)}} />
                   </div>
                 </div>
               </div>
               <div className="col-md-4 col-sm-6 col-12 center-div my-2">
                 <div className="img-div  d-flex align-items-center justify-content-center">
-                  <div>
-                      {imgUrls.length >= 2 && <img src={imgUrls[1]} width="230px" height="230px" />}
-                      {imgUrls.length <=1 && <img src={plusIcon} width="70px" />}
-                      <input type="file" className="img-upload"  onChange={this.handleImg} />
+                  <div className="text-center">
+                      {imgUrls[1] && <img src={imgUrls[1]} width="230px" height="230px" />}
+                      {!imgUrls[1] && <label htmlFor="img2"  className="img-label">
+                        <img src={plusIcon} width="70px" />
+                      </label>}
+                      <input id="img2" type="file" className="img-upload" onChange={(e)=>{this.handleImg(e , 1)}} />
                   </div>
                 </div>
               </div>
               <div className="col-md-4 col-sm-6 col-12 center-div my-2">
                 <div className="img-div  d-flex align-items-center justify-content-center">
-                  <div>
-                      {imgUrls.length >= 3 && <img src={imgUrls[2]} width="230px" height="230px" />}
-                      {imgUrls.length<=2 && <img src={plusIcon} width="70px" />}
-                      <input type="file" className="img-upload"  onChange={this.handleImg} />
+                  <div className="text-center">
+                      {imgUrls[2] && <img src={imgUrls[2]} width="230px" height="230px" />}
+                      {!imgUrls[2] && <label htmlFor="img3"  className="img-label">
+                        <img src={plusIcon} width="70px" />
+                      </label>}
+                      <input type="file" id="img3" className="img-upload" onChange={(e)=>{this.handleImg(e ,2)}} />
                   </div>
                 </div>
               </div>

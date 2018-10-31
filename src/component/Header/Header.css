@@ -6,3 +6,36 @@
     padding: 6px;
     align-items: center;
 }
+.side-menu{
+    position: fixed;
+    list-style-type: none;
+    background: hsla(0, 100%, 71%, 0.6);
+    width: -250px;
+    opacity: 0;
+    height: 100vh;
+    z-index: 1000;
+
+
+}
+.side-menu ul{
+    list-style-type: none;
+}
+
+/* @keyframes menu-bar{
+    0%{
+        transform: translateX(-250px);
+        opacity: 0;
+        }
+    50%{
+        transform: translateX(-100px);
+        opacity: 0.5;
+        }
+    100%{
+        transform: rotate(xx) translateX(0px);
+        opacity: 1;
+        }
+}
+
+.menu-btn{
+    animation: menu-bar .5s 1 0s linear;
+} */
