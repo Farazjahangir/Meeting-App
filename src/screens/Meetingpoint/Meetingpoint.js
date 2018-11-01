@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import '../../App.css'
 import './Meetingpoint.css'
 import Header from '../../component/Header/Header'
 let BASE_URI = "https://api.foursquare.com/v2/venues/search?"
@@ -16,7 +17,9 @@ class Meetingpoint extends Component {
             search: false,
             location: null,
             selectedPlace : '',
-            index : null
+            index : null,
+            isLoading : true,
+            locationNotAvailaible : false
         }
 
         this.next = this.next.bind(this)
@@ -40,12 +43,13 @@ class Meetingpoint extends Component {
                 return res.json()
             })
             .then((places) => {
-                this.setState({ location: places, search: true })
+                this.setState({ location: places, search: true , isLoading: false })
 
             })
     }
     searchForPlaces() {
         const { placeName } = this.state
+        this.setState({search : false})
 
         let QUERY = placeName
         fetch(`${BASE_URI}ll=${COORDS.latitude},${COORDS.longitude}&intent=${INTENT}&radius=${RADIUS}&query=${QUERY}&client_id=AXY5PZIGNOVK2N43M3Y2G1K2S4UOJWOVQQVYNOS2OS4N33DU&client_secret=SSCDKVQ3XWYW5EXWOUFP1ECUCOHETEEJPGFY2A4OK0QVOTII&v=20180612`)
@@ -53,7 +57,15 @@ class Meetingpoint extends Component {
                 return res.json()
             })
             .then((places) => {
-                this.setState({ location: places})
+                console.log(places.response.venues.length === 0);
+                if(places.response.venues.length === 0){
+                    console.log(this.state.isLoading);
+                    
+                    this.setState({locationNotAvailaible : true , isLoading : false})
+                }
+                else{
+                    this.setState({ search : true , location: places})
+                }
             })
 
     }
@@ -82,7 +94,7 @@ class Meetingpoint extends Component {
 
     render() {
 
-        const { placeName, location, search , index } = this.state
+        const { placeName, location, search , index , locationNotAvailaible , isLoading } = this.state
       
           
       
@@ -92,35 +104,41 @@ class Meetingpoint extends Component {
             
             <div>
                 <Header />
-                <div className="input-group my-5" style={{ width: '85%', marginLeft: 'auto', marginRight: 'auto' }}>
-                    <input type="text" value={placeName} onChange={(e) => { this.setState({ placeName: e.target.value }) }} className="form-control" placeholder="Search For Location" />
-                    <button onClick={() => { this.searchForPlaces() }} className="btn btn-success">Search</button>
-                </div>
+                {locationNotAvailaible && <h3 className="error-location">Location Not Found</h3>}
+                {isLoading &&<p id="custom-loader">Fetching Locations...</p>}
 
-                {search &&
-                    <div>
-                        <h1>Your NearBy Locations</h1>
-                        {/* {location.response.venues.map((location , i) => {
-                            console.log("location -->", location)
-                            return <ul className="list-group">
-                                <li className={index == i ? 'list-group-item location-selection my-2 selected' : 'list-group-item location-selection my-2'} onClick={()=>{this.setState({selectedPlace : location.name , index : i})}} key={i} >{location.name}
-                                </li>
-                                <span>{location.location.distance}</span>
+                <div className="my-6">
+
+                    <div className="input-group my-5" style={{ width: '85%', marginLeft: 'auto', marginRight: 'auto' }}>
+                        <input type="text" value={placeName} onChange={(e) => { this.setState({ placeName: e.target.value }) }} className="form-control" placeholder="Search For Location" />
+                        <button onClick={() => { this.searchForPlaces() }} className="btn btn-success">Search</button>
+                    </div>
+
+                    {search &&
+                        <div>
+                            <h1>Your NearBy Locations</h1>
+                            {/* {location.response.venues.map((location , i) => {
+                                console.log("location -->", location)
+                                return <ul className="list-group">
+                                    <li className={index == i ? 'list-group-item location-selection my-2 selected' : 'list-group-item location-selection my-2'} onClick={()=>{this.setState({selectedPlace : location.name , index : i})}} key={i} >{location.name}
+                                    </li>
+                                    <span>{location.location.distance}</span>
+                                </ul>
+                            })} */}
+                            <ul className="list-group">
+                                {location.response.venues.map((location , i)=>{
+                                    return <li className="list-group-item d-flex justify-content-between location-selection" id={index === i ? "selected" : ''} onClick={()=>{this.meetingPlace(location, i)}} key={i}>
+                                        <div >{location.name}</div>
+                                        <div>{location.location.distance / 1000} KM</div>
+                                    </li>
+                                })}
                             </ul>
-                        })} */}
-                        <ul className="list-group">
-                            {location.response.venues.map((location , i)=>{
-                                return <li className="list-group-item d-flex justify-content-between location-selection" id={index === i ? "selected" : ''} onClick={()=>{this.meetingPlace(location, i)}} key={i}>
-                                    <div >{location.name}</div>
-                                    <div>{location.location.distance / 1000} KM</div>
-                                </li>
-                            })}
-                        </ul>
-                        <div className="text-center my-3">
-                            <button className="btn btn-danger mx-2">Get Direction</button>
-                            <button className="btn btn-primary" onClick={this.next}>Next</button>
-                        </div>
-                    </div>}
+                            <div className="text-center my-3">
+                                <button className="btn btn-danger mx-2">Get Direction</button>
+                                <button className="btn btn-primary" onClick={this.next}>Next</button>
+                            </div>
+                        </div>}
+                </div>
 
             </div>
         )

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Header from '../../component/Header/Header'
+import '../../App.css'
 
 
 class Dashboard extends Component {
@@ -17,7 +18,7 @@ class Dashboard extends Component {
     return (
       <div>
           <Header />
-          <div className="text-center my-5">
+          <div className="text-center my-6">
             <h1>You Haven't Set A Meeting Yet</h1>
             <button className="btn btn-success" onClick={this.setMeeting}>Go Set A Meeting</button>
           </div>

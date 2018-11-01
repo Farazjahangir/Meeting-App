@@ -15,43 +15,39 @@ let urls = [];
 
 
 
-
+// facebook login function
 const loginWithFirebase = () => {
   var provider = new firebase.auth.FacebookAuthProvider();
   return new Promise((resolve, reject) => {
     firebase.auth().signInWithPopup(provider).then(function (result) {
       resolve(result)
-    }).catch(function (error) {
-      console.log(error);
-
-    });
+    })
   })
 }
 
+// facebook logout function
 const logOut = () =>{
   return new Promise((resolve , reject)=>{
     firebase.auth().signOut().then(function() {
      resolve()
-    }).catch(function(error) {
-     console.log(error);
-    });
-
+    })
   })
 }
 
+// function to save user profile
 const profileSaveToFirebase = async (data) => {
+  // getting current user uid
   const userUid = firebase.auth().currentUser.uid;
+
   for (var i = 0; i < data.imgUrls.length; i++) {
     let name = `${Date.now()} - ${userUid}`
     let message = data.imgUrls[i]
     await storageRef.child(name).putString(message, 'data_url')
     const url = await storageRef.child(name).getDownloadURL();
-    console.log("url -->", url)
     urls.push(url)
   }
 
-  console.log("data.coords -->", data.coords)
-
+  // saving profile to db
   return new Promise((resolve, reject) => {
     db.collection("users").doc(userUid).set({
       Nickname: data.nickName,
@@ -71,12 +67,14 @@ const profileSaveToFirebase = async (data) => {
 
 }
 
+// checking user profile
 const checkingUser = () => {
   const userUid = firebase.auth().currentUser.uid;
   return new Promise((resolve, reject) => {
     var docRef = db.collection("users").doc(userUid);
-    docRef.get().then(function (doc) {
-      console.log("DOC", doc);
+    docRef.get()
+    // if exist
+    .then(function (doc) {
       resolve(doc)
     })
       .catch(function (error) {
@@ -86,6 +84,7 @@ const checkingUser = () => {
   })
 }
 
+// getting current user data
 const getUserData = () => {
 
   const userUid = firebase.auth().currentUser.uid;
@@ -97,11 +96,12 @@ const getUserData = () => {
   })
 }
 
+// getting other users
 const getOtherUsers = (data) => {
-  const usersArr = []
-  const bevrages = data.Bevarages
-  const meetingTime = data.MeetingTime
-  const matchedUsers = []
+  const usersArr = [] //empty array to save users
+  const bevrages = data.Bevarages // current user bev
+  const meetingTime = data.MeetingTime // current user meetingTimes
+  const matchedUsers = [] // to save matched users
 
   return new Promise((resolve , reject)=>{
 

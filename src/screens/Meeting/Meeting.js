@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import swal from 'sweetalert';
+import '../../App.css'
 
 import './Meeting.css'
 import Header from '../../component/Header/Header'
@@ -10,7 +11,6 @@ import img2 from '../../images/juice.jpg'
 import img3 from '../../images/cocktail.jpg'
 import dot from '../../images/circle.png'
 import dot1 from '../../images/circle1.png'
-
 
 const data = [img1 , img2 , img3];
 let userData;
@@ -30,22 +30,24 @@ class Meeting extends Component {
       dotSelect3 : false,
       meet : false,
       reject : false,
-      end :false
+      end :false,
+      isLoading : true
     }
   }
+  // show user on load
   componentDidMount(){
+    // checking loggin
     firebase.auth().onAuthStateChanged((user) => {
       if(user){
-        console.log("logged in");
         getUserData().then((data)=>{
+          // saving current user data
           userData = data
           this.setState({users : true})
+          // sending current user from param
           getOtherUsers(userData)
           .then((matchedUsers)=>{
-            console.log(matchedUsers);
-            
             let { matchedUsersArr } = this.state
-            this.setState({matchedUsersArr : [...matchedUsersArr , ...matchedUsers]})         
+            this.setState({matchedUsersArr : [...matchedUsersArr , ...matchedUsers] , isLoading : false})         
           })
           
       })
@@ -53,6 +55,8 @@ class Meeting extends Component {
     }
   })
 }
+
+// if user wants to meet
   meet(item){
     this.setState({
       dotSelect1 : true,
@@ -73,6 +77,7 @@ class Meeting extends Component {
     
   }
 
+  // if user rejects 
   reject(){
     this.setState({
       dotSelect1 : true,
@@ -86,6 +91,7 @@ class Meeting extends Component {
       },800)  
   }
 
+  // when users finished
     userEnd(){
       console.log("END");
       this.setState({end : true})
@@ -98,23 +104,18 @@ class Meeting extends Component {
             dotSelect3,
             meet,
             reject,
+            isLoading,
             end
-          }= this.state
+          }= this.state;
+        console.log("this.props -->", this.props)
     
     return (
       <div>
-        <div>
-          
-        </div>
-        <div>
-          <Header />
-          <div>
+          <Header/>
+          {isLoading && <p id="custom-loader">Loading Users...</p>}
+        <div className="my-6">
 
-          </div>
-          {/* <div class="decision text-right">
-            <p className={meet ? 'meet visible' : 'meet'}>Meet</p>
-            <p className={reject ? 'reject visible' : 'reject' }>Reject</p>
-          </div> */}
+        {/* cards to show users */}
           <Cards onEnd={()=>{this.userEnd()}}  className={'master-root'} >
           {matchedUsersArr.map(item =>
             <Card

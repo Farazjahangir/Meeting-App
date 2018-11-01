@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import '../../App.css'
 import swal from 'sweetalert';
 
 
@@ -39,7 +40,7 @@ class Meetingtime extends Component {
     return (
       <div>
           <Header />
-          <h2 className="text-center my-5">Select Time And Date For Meeting</h2>
+          <h2 className="text-center my-6">Select Time And Date For Meeting</h2>
           <div className="container-fluid">
             <div className="row">
                 <div className="col-md-6">

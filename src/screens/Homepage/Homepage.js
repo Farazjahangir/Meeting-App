@@ -15,19 +15,26 @@ class Homepage extends Component {
       console.log("COMPONENT DID MOUNT");
       
       firebase.auth().onAuthStateChanged((user)=>{
-        this.setState({isLoading: false})
+        // Checking user login 
         if(user){
-          console.log("USER Logged in");
+          // function to check user profile
           checkingUser()
           .then((doc)=>{
-              if(doc.exists){
-                console.log('DOC  ====>' , doc);
+            // if user Profile exist
+            if(doc.exists){
+              console.log('DOC  ====>' , doc);
+                this.setState({isLoading: false})
                 this.props.history.replace("/dashboard")
               }
               else{
+                this.setState({isLoading: false})
                 this.props.history.replace("/profile")
               }  
             })          
+          }
+          // if user not login
+          else{
+            this.setState({isLoading: false})
           }
       })
     }
@@ -35,6 +42,7 @@ class Homepage extends Component {
     login(){
       loginWithFirebase()
       .then((user)=>{
+        // function to check user profile
         checkingUser()
         .then((doc)=>{
             if(doc.exists){
@@ -55,12 +63,16 @@ class Homepage extends Component {
     const { isLoading } = this.state
     return (
       <div>
+        {/* div for background image */}
         <div className="bg" id={isLoading ? "op" : ''}></div>
+        {/* loader */}
         <div className={isLoading ? "show" : "hide"}>
           <div id="preloader">
             <div id="loader"></div>
           </div>
         </div>
+
+        
         <div className="homepage-content" id={isLoading ? "op" : ''}>
             <h1>Explore The World And Make Friends</h1>
             <h2>Log In Here</h2>
