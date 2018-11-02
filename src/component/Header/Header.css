@@ -30,9 +30,9 @@
     animation: open-menu .5s 1 0s linear forwards;
 }
 
-.close-menu{
+/* .close-menu{
     animation: close-menu .5s 1 0s linear forwards;
-}
+} */
 
 @keyframes open-menu{
     0%{
@@ -48,7 +48,9 @@
         opacity: 1;
         }
 }
-@keyframes close-menu{
+
+
+/* @keyframes close-menu{
     0%{
         transform: rotate(xx) translateX(0px);
         opacity: 1;
@@ -61,4 +63,10 @@
         transform: translateX(-250px);
         opacity: 0;
         }
+} */
+
+@media (max-width : 500px){
+    #header h1{
+        font-size : 23px;
+    }
 }

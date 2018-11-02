@@ -57,9 +57,7 @@ class Meetingpoint extends Component {
                 return res.json()
             })
             .then((places) => {
-                console.log(places.response.venues.length === 0);
                 if(places.response.venues.length === 0){
-                    console.log(this.state.isLoading);
                     
                     this.setState({locationNotAvailaible : true , isLoading : false})
                 }
@@ -71,7 +69,6 @@ class Meetingpoint extends Component {
     }
 
     meetingPlace(location , i){
-        console.log("hi");
         
         let distance =  location.location.distance / 1000
         let avgDistance = distance.toFixed(1)
@@ -85,21 +82,20 @@ class Meetingpoint extends Component {
     }
 
     next(){
-        console.log("run");
-        
+        const likedUserData = this.props.location.state.data
         const { selectedPlace } = this.state
-        this.props.history.push('/meetingTime' , {place : selectedPlace})
+        this.props.history.push('/meetingTime' , {place : selectedPlace , userData : likedUserData})
     }
 
 
     render() {
+        
 
         const { placeName, location, search , index , locationNotAvailaible , isLoading } = this.state
       
           
       
         
-           console.log('index' , index)   
         return (
             
             <div>
@@ -109,25 +105,17 @@ class Meetingpoint extends Component {
 
                 <div className="my-6">
 
-                    <div className="input-group my-5" style={{ width: '85%', marginLeft: 'auto', marginRight: 'auto' }}>
+                    <div className="input-group my-5 location-search">
                         <input type="text" value={placeName} onChange={(e) => { this.setState({ placeName: e.target.value }) }} className="form-control" placeholder="Search For Location" />
                         <button onClick={() => { this.searchForPlaces() }} className="btn btn-success">Search</button>
                     </div>
 
                     {search &&
                         <div>
-                            <h1>Your NearBy Locations</h1>
-                            {/* {location.response.venues.map((location , i) => {
-                                console.log("location -->", location)
-                                return <ul className="list-group">
-                                    <li className={index == i ? 'list-group-item location-selection my-2 selected' : 'list-group-item location-selection my-2'} onClick={()=>{this.setState({selectedPlace : location.name , index : i})}} key={i} >{location.name}
-                                    </li>
-                                    <span>{location.location.distance}</span>
-                                </ul>
-                            })} */}
+                            <h1 className="text-center font-1">Your NearBy Locations</h1>
                             <ul className="list-group">
                                 {location.response.venues.map((location , i)=>{
-                                    return <li className="list-group-item d-flex justify-content-between location-selection" id={index === i ? "selected" : ''} onClick={()=>{this.meetingPlace(location, i)}} key={i}>
+                                    return <li className="list-group-item d-flex justify-content-between location" id={index === i ? "selected" : ''} onClick={()=>{this.meetingPlace(location, i)}} key={i}>
                                         <div >{location.name}</div>
                                         <div>{location.location.distance / 1000} KM</div>
                                     </li>

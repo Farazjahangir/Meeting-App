@@ -6,6 +6,7 @@ import swal from 'sweetalert';
 import './Meetingtime.css'
 import Header from '../../component/Header/Header'
 import Calendar from 'react-calendar';
+import { savingLikedUserData } from '../../config/Firebase/Firebase'
  
 class Meetingtime extends Component {
     constructor(){
@@ -17,6 +18,7 @@ class Meetingtime extends Component {
         this.sendRequest = this.sendRequest.bind(this)
     }
 
+
     selectDate = date => this.setState({ date })
 
     sendRequest(){
@@ -25,7 +27,11 @@ class Meetingtime extends Component {
           })
           .then((value)=>{
             if(value){
-              this.props.history.push('/dashboard')
+                console.log(value);
+                let likedUser = this.props.location.state.userData 
+                savingLikedUserData(likedUser)
+        
+            //   this.props.history.push('/dashboard')
             }
             
           })
@@ -33,14 +39,14 @@ class Meetingtime extends Component {
     }
 
   render() {
-      console.log(this.state);
+      console.log(this.props);
       
     const { defaultTime } = this.state
     
     return (
       <div>
           <Header />
-          <h2 className="text-center my-6">Select Time And Date For Meeting</h2>
+          <h2 className="text-center my-6 head-1">Select Time And Date For Meeting</h2>
           <div className="container-fluid">
             <div className="row">
                 <div className="col-md-6">

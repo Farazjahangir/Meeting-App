@@ -30,7 +30,7 @@ class Header extends Component {
             <h1>Meeting App</h1>
             <img src={menuIcon} style={{cursor : 'pointer'}} onClick={()=>{this.setState({showMenu : true})}} />
         </header>
-        <nav className={showMenu ? "menu-bar open-menu" : 'close-menu hide-menu'} >
+        <nav className={showMenu ? "menu-bar open-menu" : 'hide-menu'} >
           <div style={{marginTop : '70px'}} className="text-right">
             <img src={closeIcon} style={{cursor : 'pointer'}}  onClick={()=>{this.setState({showMenu : false})}} />
           </div> 

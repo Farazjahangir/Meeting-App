@@ -1,9 +1,13 @@
-.location-selection:hover{
+.location:hover{
     background: rgba(211, 211, 211, 0.8);
     cursor: pointer;
 }
 #selected{
     background: rgba(211, 211, 211);
+}
+.location-search{
+    width: 85%;
+    margin : 0 auto;
 }
 .error-location{
     position: absolute;
@@ -11,4 +15,22 @@
     left : 50%;
     transform: translate(-50% , -50%);
     text-align: center;
+}
+.font-1{
+    font-size: 32px
+}
+
+@media (max-width : 550px){
+    .font-1{
+        font-size: 24px
+    }    
+}
+
+@media (max-width : 460px){
+    .location div{
+        font-size: 12px;
+    }
+    .location-search{
+        width: 95%;
+    }
 }

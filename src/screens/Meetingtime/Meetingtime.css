@@ -16,3 +16,16 @@
         width: 80%;
     }
 }
+
+@media (max-width : 500px){
+    .head-1{
+        font-size: 23px
+    }
+    .custom-btn{
+        width: 90%;
+    }   
+    .time-div{
+        width: 90%;
+        margin-left: 12px
+    } 
+}

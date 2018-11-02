@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import '../../App.css'
 import 'rc-steps/assets/index.css';
 import 'rc-steps/assets/iconfont.css';
 import Steps, { Step } from 'rc-steps';
@@ -141,7 +142,7 @@ componentDidUpdate(){
 
       </div>
 
-        <div className={finished ? "container-fluid opacity-1" : "container-fluid"}>
+        <div className={finished ? "container-fluid opacity-1 my-6" : "container-fluid my-6"}>
           <div className="rc-steps">
             <Steps labelPlacement="vertical" current={steps} >
               <Step />
@@ -162,10 +163,10 @@ componentDidUpdate(){
           }
           {steps === 1 &&
             <div className="row my-5">
-              <div className="col-md-4 col-sm-6 col-12 center-div my-2">
+              <div className="col-md-4 col-sm-6 col-12 my-2">
                 <div className="img-div d-flex align-items-center justify-content-center">
                   <div className="text-center">
-                      {imgUrls[0] && <img src={imgUrls[0]} width="230" height="230px" />}
+                      {imgUrls[0] && <img src={imgUrls[0]} width="230" height="230px" className="user-img" />}
                       {!imgUrls[0] && <label htmlFor="img1" className="img-label">
                         <img src={plusIcon} width="70px" />
                       </label>}
@@ -173,10 +174,10 @@ componentDidUpdate(){
                   </div>
                 </div>
               </div>
-              <div className="col-md-4 col-sm-6 col-12 center-div my-2">
+              <div className="col-md-4 col-sm-6 col-12 my-2">
                 <div className="img-div  d-flex align-items-center justify-content-center">
                   <div className="text-center">
-                      {imgUrls[1] && <img src={imgUrls[1]} width="230px" height="230px" />}
+                      {imgUrls[1] && <img src={imgUrls[1]} width="230px" height="230px" className="user-img" />}
                       {!imgUrls[1] && <label htmlFor="img2"  className="img-label">
                         <img src={plusIcon} width="70px" />
                       </label>}
@@ -184,10 +185,10 @@ componentDidUpdate(){
                   </div>
                 </div>
               </div>
-              <div className="col-md-4 col-sm-6 col-12 center-div my-2">
+              <div className="col-md-4 col-sm-6 col-12 my-2">
                 <div className="img-div  d-flex align-items-center justify-content-center">
                   <div className="text-center">
-                      {imgUrls[2] && <img src={imgUrls[2]} width="230px" height="230px" />}
+                      {imgUrls[2] && <img src={imgUrls[2]} width="230px" height="230px" className="user-img" />}
                       {!imgUrls[2] && <label htmlFor="img3"  className="img-label">
                         <img src={plusIcon} width="70px" />
                       </label>}
@@ -195,6 +196,7 @@ componentDidUpdate(){
                   </div>
                 </div>
               </div>
+
             </div>
           }
           {steps===2 && 
@@ -203,15 +205,15 @@ componentDidUpdate(){
                   <h3 className="text-center font-1 mt-1">What Do You Prefer</h3>
                 </div>
                 <div className="row">
-                  <div className="col-md-4 col-sm-6 col-12 my-5">
-                    <img src={coffee} value="Coffee" width="100%" height="300px" className={bevarages.includes('coffee') ? "bevarages selected" : "bevarages"} onClick={()=>{this.selectBev('coffee')}} />
+                  <div className="col-md-4 col-sm-6 my-5 text-center">
+                    <img src={coffee}  width="100%" height="300px" className={bevarages.includes('coffee') ? "bevarages selected" : "bevarages"} onClick={()=>{this.selectBev('coffee')}} />
                     <h3 className="text-center">Coffee</h3>
                   </div>
-                  <div className="col-md-4 col-sm-6 col-12 my-5">
+                  <div className="col-md-4 col-sm-6 my-5 text-center">
                     <img src={juice} width="100%" height="300px" className={bevarages.includes('juice') ? "bevarages selected" : "bevarages"} onClick={()=>{this.selectBev('juice')}} />
                     <h3 className="text-center">Juice</h3>                    
                   </div>
-                  <div className="col-md-4 col-sm-6 col-12 my-5">
+                  <div className="col-md-4 col-sm-6 my-5 text-center">
                     <img src={cocktail} width="100%" height="300px" className={bevarages.includes('cocktail') ? "bevarages selected" : "bevarages"} onClick={()=>{this.selectBev('cocktail')}} />
                     <h3 className="text-center">cocktail</h3>                    
                   </div>
@@ -221,7 +223,7 @@ componentDidUpdate(){
                 <h3 className="text-center font-1 mt-1">Duration For Meeting</h3>
                 <div className="row my-5">
 
-                  <div className="col-md-4 col-sm-6 col-12 my-3">
+                  <div className="col-md-4 col-sm-6 my-3">
                     <div className={meetingTime.includes('120min') ? "text-center meeting-time-box selected-time" : "text-center meeting-time-box"} onClick={()=>{this.selectedTime("120min")}}>
                       <h1>120</h1>
                       <h3>Minutes</h3>
@@ -254,7 +256,7 @@ componentDidUpdate(){
             <MyMapComponent
               isMarkerShown={true}
               googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
-              loadingElement={<div style={{ height: `100%` }} />}
+              loadingElement={<div style={{ height: `100%` , width : '100%' }} />}
               containerElement={<div style={{ height: `600px` }} />}
               mapElement={<div style={{ height: `100%` }} />
             }

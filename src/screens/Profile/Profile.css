@@ -139,4 +139,51 @@
           top: 6.94em
       }
   }
+
+
+  @media (max-width : 580px){
+      .step-1{
+            width: 90%;
+      }
+      .rc-steps{
+          width: 100%;
+      }
+      .img-div{
+        width: 220px;
+        height: 220px;
+        margin : 0 auto;
+        }
+        .bevarages{
+            width : 70%;
+            height : 240px;
+            text-align: center
+        }
+        .meeting-time-box{
+            width : 75%;
+            margin: 0 auto;
+        }
+    }
+    @media (max-width : 760px){
+        
+        .img-div{
+            width: 280px;
+            height: 280px
+        }
+        .user-img{
+          width: 280px;
+          height: 280px
+        }
+  }
+
+  @media (max-width : 430px){
+    .step-1{
+        width: 100%;
+    }
+    .bevarages{
+        width : 100%
+    }
+    .meeting-time-box{
+        width: 95%;
+    }
+  }
   

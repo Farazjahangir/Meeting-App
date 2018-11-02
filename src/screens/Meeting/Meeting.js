@@ -136,7 +136,7 @@ class Meeting extends Component {
             </Card>
           )}
         </Cards>
-          {end && <h2 class="end">No More Match Users Found</h2>}
+          {end && <h2 class="end text-center">No More Match Users Found</h2>}
         </div>
       </div>
     )

@@ -135,6 +135,35 @@ const getOtherUsers = (data) => {
 }
 
 
+const savingLikedUserData = (data) =>{
+  let likedUserArr
+  console.log(data);
+  
+  const userUid = firebase.auth().currentUser.uid;
+  db.collection('users').doc(userUid).get()
+  .then((doc)=>{
+    
+    if(doc.data().likedUsers){
+      likedUserArr = doc.data().likedUsers
+      likedUserArr.unshift(data.userUid)
+      db.collection('users').doc(userUid).update({
+          likedUsers : likedUserArr
+      })
+    }
+    else{
+      likedUserArr = []
+      likedUserArr.push(data.userUid)
+      db.collection('users').doc(userUid).update({
+        likedUsers : likedUserArr
+    })
+    }
+    
+  })
+  
+  
+
+}
+
 export {
   firebase,
   loginWithFirebase,
@@ -142,5 +171,6 @@ export {
   profileSaveToFirebase,
   checkingUser,
   getUserData,
-  getOtherUsers
+  getOtherUsers,
+  savingLikedUserData
 }

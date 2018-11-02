@@ -21,8 +21,8 @@ class Homepage extends Component {
           checkingUser()
           .then((doc)=>{
             // if user Profile exist
+            console.log('DOC  ====>' , doc.data());
             if(doc.exists){
-              console.log('DOC  ====>' , doc);
                 this.setState({isLoading: false})
                 this.props.history.replace("/dashboard")
               }

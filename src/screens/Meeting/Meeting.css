@@ -64,3 +64,16 @@
     transform: translate(-50% , -50%);
     color: #ff6b6b;
 }
+
+@media (max-width : 500px){
+    .username{
+        font-size: 17px;
+    }
+    .dot-div img{
+        width : 13px;
+        height: 13px;
+    }   
+    .end{
+        font-size: 17px
+    } 
+}

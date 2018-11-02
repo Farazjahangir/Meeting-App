@@ -108,11 +108,11 @@
 
 @media (max-width: 550px){
     .homepage-content h1{
-        font-size: 1.9em;
+        font-size: 1.6em;
         color: white;
     }
     .homepage-content h2{
-        font-size: 1.6em;
+        font-size: 1.4em;
         color: white;
     }    
 }
