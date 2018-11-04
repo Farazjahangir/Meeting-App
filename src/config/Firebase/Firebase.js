@@ -137,7 +137,6 @@ const getOtherUsers = (data) => {
 
 const savingLikedUserData = (data) =>{
   let likedUserArr
-  console.log(data);
   
   const userUid = firebase.auth().currentUser.uid;
   db.collection('users').doc(userUid).get()
@@ -157,11 +156,29 @@ const savingLikedUserData = (data) =>{
         likedUsers : likedUserArr
     })
     }
-    
-  })
-  
-  
 
+    const otherUserUid = data.userUid
+    console.log("DCUMENT" , doc);
+    
+    db.collection('users').doc(otherUserUid).update({
+      notificationFlag : true,
+      notification : firebase.firestore.FieldValue.arrayUnion({Name : `${doc.data().Nickname} wants to meet you` , img : doc.data().UserImages[0]})
+    })
+    
+  }) 
+}
+
+const gettingNotifications = ()=>{
+  const userUid = firebase.auth().currentUser.uid;
+
+  return new Promise((resolve , reject)=>{
+    db.collection('users').doc(userUid).get()
+      .then((doc)=>{
+        resolve(doc)
+      })
+
+  })
+    
 }
 
 export {
@@ -172,5 +189,6 @@ export {
   checkingUser,
   getUserData,
   getOtherUsers,
-  savingLikedUserData
+  savingLikedUserData,
+  gettingNotifications
 }

@@ -20,7 +20,6 @@ class Dashboard extends Component {
             messaging
             .requestPermission()
             .then(function() {
-              console.log("Notification permission granted.");
               return messaging.getToken();
             })
             .then(function(currentToken) {
@@ -32,7 +31,6 @@ class Dashboard extends Component {
                 });
             })
             .catch(function(err) {
-              console.log("Unable to get permission to notify.", err);
             });
       
           messaging.onMessage(payload => {
@@ -47,6 +45,7 @@ class Dashboard extends Component {
         this.props.history.push('/meeting')
     }
   render() {
+    
     return (
       <div>
           <Header />

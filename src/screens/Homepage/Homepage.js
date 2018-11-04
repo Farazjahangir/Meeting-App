@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import './Homepage.css'
 import {loginWithFirebase , checkingUser , firebase} from '../../config/Firebase/Firebase'
 import { Link } from "react-router-dom";
-
 class Homepage extends Component {
     constructor(props){
         super()
@@ -17,9 +16,9 @@ class Homepage extends Component {
       firebase.auth().onAuthStateChanged((user)=>{
         // Checking user login 
         if(user){
-          // function to check user profile
           checkingUser()
           .then((doc)=>{
+          // function to check user profile
             // if user Profile exist
             console.log('DOC  ====>' , doc.data());
             if(doc.exists){
@@ -42,7 +41,10 @@ class Homepage extends Component {
     login(){
       loginWithFirebase()
       .then((user)=>{
+        // this.props.login(user)
         // function to check user profile
+        console.log('USER LOGIGN' , user);
+        
         checkingUser()
         .then((doc)=>{
             if(doc.exists){
@@ -81,6 +83,7 @@ class Homepage extends Component {
       </div>
     )
   }
+
 }
 
 export default Homepage
