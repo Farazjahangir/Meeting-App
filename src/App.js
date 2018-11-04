@@ -9,25 +9,34 @@ import { firebase } from './config/Firebase/Firebase'
 class App extends Component {
   constructor(){
     super()
-    this.state = {login : false}
+    this.state = {flag : false}
+
+    this.userChecking = this.userChecking.bind(this)
   }
 
+
+userChecking(){
+  firebase.auth().onAuthStateChanged((user)=>{
+    const flag = true;
+    this.setState({flag})
+  })
+}
+
   componentDidMount(){
+    console.log("COMPONENTDID2");
     firebase.auth().onAuthStateChanged((user)=>{
-      if(user){
-        this.setState({login : true})
-        console.log("APP If");
-        
-      } 
     })
-    return true
+  
+    
+    this.userChecking()
   }
+
   render() {
-    const { login } = this.state
+    const { flag } = this.state
     
     return (
       <div>
-          {login && <Provider store={store}>
+          {flag && <Provider store={store}>
             <Routes />
           </Provider>}
       </div>

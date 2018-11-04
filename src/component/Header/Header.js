@@ -31,6 +31,12 @@ class Header extends Component {
   }
 
   static getDerivedStateFromProps(nextProps){
+    if(nextProps.notification === undefined){
+      return{
+        notifications : [], 
+        notified : nextProps.notificationFlag
+      }
+    }
       return{
         notifications : nextProps.notification, 
         notified : nextProps.notificationFlag
@@ -75,6 +81,8 @@ class Header extends Component {
         {notificationShow &&
           <div className="notification-div" >
             {notifications.map((value)=>{
+              console.log(value);
+              
               return <div className="notification">
                 <img src={value.img} width="30px" height="30px" />
                 <p>{value.Name}</p>
