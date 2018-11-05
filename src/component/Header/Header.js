@@ -11,7 +11,9 @@ import { connect } from 'react-redux'
 import { get } from 'https';
 import getNotification from '../../Redux/Actions/notifyAction';
 
-let userUid = ''
+let userUid = null
+let db = firebase.firestore()
+
 
 class Header extends Component {
   constructor(props){
@@ -20,7 +22,8 @@ class Header extends Component {
       showMenu : false,
       notificationShow : false,
       notified : false,
-      notificatons : null
+      notificatons : null,
+      profilePicUrl : ''
     }
     this.signOut = this.signOut.bind(this)
   }
@@ -31,15 +34,20 @@ class Header extends Component {
   }
 
   static getDerivedStateFromProps(nextProps){
+    console.log("NEXTPROPS" , nextProps);
+    
+    
     if(nextProps.notification === undefined){
       return{
         notifications : [], 
-        notified : nextProps.notificationFlag
+        notified : nextProps.notificationFlag,
+        profilePicUrl : nextProps.profilePicUrl
       }
     }
       return{
         notifications : nextProps.notification, 
-        notified : nextProps.notificationFlag
+        notified : nextProps.notificationFlag,
+        profilePicUrl : nextProps.profilePicUrl
       }    
     
   }
@@ -51,7 +59,6 @@ class Header extends Component {
     
     else this.setState({notificationShow : true})
 
-    let db = firebase.firestore()
 
     db.collection("users").doc(userUid).update({notificationFlag : false})
   }
@@ -59,13 +66,16 @@ class Header extends Component {
   signOut(){
     logOut()
     .then(()=>{
+      db.collection('users').doc(userUid).update({userToken : firebase.firestore.FieldValue.delete()})
       this.props.history.push('/')
     })
   }
 
   render() {
-    const { notifications , notified } = this.state
+    const { notifications , notified , profilePicUrl } = this.state
     console.log('NOTIFICATIONS' , this.state.notifications);
+    console.log("RENDER");
+    
     
     const { showMenu , notificationShow } = this.state
     return (
@@ -95,8 +105,11 @@ class Header extends Component {
           <div style={{marginTop : '70px'}} className="text-right">
             <img src={closeIcon} style={{cursor : 'pointer'}}  onClick={()=>{this.setState({showMenu : false})}} />
           </div> 
+          <div style={{textAlign : 'center'}}>
+            <img src={profilePicUrl} id="profile-pic" />
+          </div>
           <ul>
-            <li className="mx-4">
+            <li className="mx-4 my-4 ">
               <button className="btn btn-primary" onClick={this.signOut} >SignOut</button>
             </li>
           </ul>
@@ -118,6 +131,7 @@ const mapStateToProps = (state) =>{
   return{
     notification : state.notifyReducer.notification,
     notificationFlag : state.notifyReducer.notificationFlag,
+    profilePicUrl : state.notifyReducer.profilePicUrl
   }
   
 

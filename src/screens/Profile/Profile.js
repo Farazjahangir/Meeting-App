@@ -18,14 +18,16 @@ class Profile extends Component {
     super()
     this.state = {
       steps: 0,
-      imgUrls : [null , null , null],
-      nickName : '',
-      contactNum : '',
-      bevarages : [],
-      meetingTime : [],
-      coords : {latitude : 24.946218 , longitude : 67.005615},
-      finished : false
-      
+      imgUrls: [null, null, null],
+      nickName: '',
+      contactNum: '',
+      bevarages: [],
+      meetingTime: [],
+      coords: { latitude: 24.946218, longitude: 67.005615 },
+      finished: false,
+      profilePic: '',
+      profilePicUploaded : false
+
     }
     this.nextStep = this.nextStep.bind(this)
     this.prevStep = this.prevStep.bind(this)
@@ -44,71 +46,85 @@ class Profile extends Component {
     this.setState({ steps: steps - 1 })
   }
 
-  handleImg(e , a){
-    console.log('sdsd' , a);
-    
-    const { imgUrls , imgArr } = this.state    
-      let reader = new FileReader();
-      reader.onload = (e) => {
-          let urlImg = e.target.result;
-          imgUrls[a] = urlImg
-          this.setState({
-            // imgUrls: [...imgUrls , urlImg]
-            imgUrls: imgUrls
-          })
-      };
-      reader.readAsDataURL(e.target.files[0]);
-  }
-      
-  selectBev(bev){
-        const { bevarages } = this.state
-        if(!bevarages.includes(bev)){
-          this.setState({bevarages : [...bevarages , bev]})
-        }
-        else{
-          let index = bevarages.indexOf(bev)
-          bevarages.splice(index , 1)
-          this.setState({bevarages : bevarages})
-        }
-    }
+  handleImg(e, a) {
+    console.log(e.target.files);
 
-  selectedTime(time){
+    const { imgUrls, imgArr } = this.state
+    let reader = new FileReader();
+    reader.onload = (e) => {
+      let urlImg = e.target.result;
+      imgUrls[a] = urlImg
+      this.setState({
+        // imgUrls: [...imgUrls , urlImg]
+        imgUrls: imgUrls
+      })
+    };
+    reader.readAsDataURL(e.target.files[0]);
+  }
+
+  selectBev(bev) {
+    const { bevarages } = this.state
+    if (!bevarages.includes(bev)) {
+      this.setState({ bevarages: [...bevarages, bev] })
+    }
+    else {
+      let index = bevarages.indexOf(bev)
+      bevarages.splice(index, 1)
+      this.setState({ bevarages: bevarages })
+    }
+  }
+
+  selectedTime(time) {
     const { meetingTime } = this.state
-    if(!meetingTime.includes(time)){
-      this.setState({meetingTime : [...meetingTime , time]})
+    if (!meetingTime.includes(time)) {
+      this.setState({ meetingTime: [...meetingTime, time] })
     }
-    else{
+    else {
       let index = meetingTime.indexOf(time)
-      meetingTime.splice(index , 1)
-      this.setState({meetingTime : meetingTime})
+      meetingTime.splice(index, 1)
+      this.setState({ meetingTime: meetingTime })
     }
   }
 
-componentDidUpdate(){
-  this.setPosition()
-}
+  componentDidUpdate() {
+    this.setPosition()
+  }
 
   setPosition() {
     const { coords } = this.state
-    
-    navigator.geolocation.getCurrentPosition((position)=>{
+
+    navigator.geolocation.getCurrentPosition((position) => {
       // this.setState({coords: position.coords})     
-      this.setState({coords: {latitude : position.coords.latitude , longitude : position.coords.longitude}})     
+      this.setState({ coords: { latitude: position.coords.latitude, longitude: position.coords.longitude } })
     })
   }
 
-
-  updateCoords({latitude, longitude}) {
-    this.setState({coords: {latitude, longitude}})
+  uploadProfilePic(e){
+    let reader = new FileReader();
+    reader.onload = (e) => {
+      let urlImg = e.target.result;
+      this.setState({
+        profilePic : urlImg,
+        profilePicUploaded : true
+      })
+    };
+    reader.readAsDataURL(e.target.files[0]);
+    console.log(e.target.files);
+    
   }
 
-  setUpProfile(){
-    this.setState({finished : true})
-    profileSaveToFirebase(this.state).then(()=>{
+
+  updateCoords({ latitude, longitude }) {
+    this.setState({ coords: { latitude, longitude } })
+  }
+
+  setUpProfile() {
+    this.setState({ finished: true })
+    profileSaveToFirebase(this.state).then(() => {
       this.props.history.push('/dashboard')
       console.log('UPLOADED');
-      this.setState({finished : false})
-      
+      this.setState({ finished: false })
+
     })
   }
 
@@ -116,35 +132,38 @@ componentDidUpdate(){
 
   render() {
     const { steps,
-            imgUrls, 
-            nickName, 
-            contactNum, 
-            bevarages, 
-            coords,
-            meetingTime,
-            finished
-          } = this.state
-          console.log(imgUrls);
-          
+      imgUrls,
+      nickName,
+      contactNum,
+      bevarages,
+      coords,
+      meetingTime,
+      finished,
+      profilePic,
+      profilePicUploaded
+    } = this.state
+    console.log("PROFILE" , profilePic === '');
+
     return (
       <div>
         <Header />
 
-      <div className={finished ? "custom-loader" : "none"}>
-        <h1 className="loader">
-        <span class="let1">S</span>  
-        <span class="let2">A</span>  
-        <span class="let3">V</span>  
-        <span class="let4">I</span>  
-        <span class="let5">N</span>  
-        <span class="let6">G</span>  
-        </h1>
+        <div className={finished ? "custom-loader" : "none"}>
+          <h1 className="loader">
+            <span class="let1">S</span>
+            <span class="let2">A</span>
+            <span class="let3">V</span>
+            <span class="let4">I</span>
+            <span class="let5">N</span>
+            <span class="let6">G</span>
+          </h1>
 
-      </div>
+        </div>
 
         <div className={finished ? "container-fluid opacity-1 my-6" : "container-fluid my-6"}>
           <div className="rc-steps">
             <Steps labelPlacement="vertical" current={steps} >
+              <Step />
               <Step />
               <Step />
               <Step />
@@ -154,10 +173,10 @@ componentDidUpdate(){
           {steps === 0 &&
             <div className="step-1">
               <div className="form-group">
-                <input type="text" value={nickName} placeholder="Enter Your Nick Name" className="form-control" onChange={(e)=>{this.setState({nickName : e.target.value})}} required />
+                <input type="text" value={nickName} placeholder="Enter Your Nick Name" className="form-control" onChange={(e) => { this.setState({ nickName: e.target.value }) }} required />
               </div>
               <div className="form-group">
-                <input type="number" value={contactNum} placeholder="Your Contact Number" className="form-control" onChange={(e)=>{this.setState({contactNum : e.target.value})}} required />
+                <input type="number" value={contactNum} placeholder="Your Contact Number" className="form-control" onChange={(e) => { this.setState({ contactNum: e.target.value }) }} required />
               </div>
             </div>
           }
@@ -166,120 +185,140 @@ componentDidUpdate(){
               <div className="col-md-4 col-sm-6 col-12 my-2">
                 <div className="img-div d-flex align-items-center justify-content-center">
                   <div className="text-center">
-                      {imgUrls[0] && <img src={imgUrls[0]} width="230" height="230px" className="user-img" />}
-                      {!imgUrls[0] && <label htmlFor="img1" className="img-label">
-                        <img src={plusIcon} width="70px" />
-                      </label>}
-                        <input id="img1" type="file" className="img-upload" onChange={(e)=>{this.handleImg(e ,0)}} />
+                    {imgUrls[0] && <img src={imgUrls[0]} width="230" height="230px" className="user-img" />}
+                    {!imgUrls[0] && <label htmlFor="img1" className="img-label">
+                      <img src={plusIcon} width="70px" />
+                    </label>}
+                    <input id="img1" type="file" className="img-upload" onChange={(e) => { this.handleImg(e, 0) }} />
                   </div>
                 </div>
               </div>
               <div className="col-md-4 col-sm-6 col-12 my-2">
                 <div className="img-div  d-flex align-items-center justify-content-center">
                   <div className="text-center">
-                      {imgUrls[1] && <img src={imgUrls[1]} width="230px" height="230px" className="user-img" />}
-                      {!imgUrls[1] && <label htmlFor="img2"  className="img-label">
-                        <img src={plusIcon} width="70px" />
-                      </label>}
-                      <input id="img2" type="file" className="img-upload" onChange={(e)=>{this.handleImg(e , 1)}} />
+                    {imgUrls[1] && <img src={imgUrls[1]} width="230px" height="230px" className="user-img" />}
+                    {!imgUrls[1] && <label htmlFor="img2" className="img-label">
+                      <img src={plusIcon} width="70px" />
+                    </label>}
+                    <input id="img2" type="file" className="img-upload" onChange={(e) => { this.handleImg(e, 1) }} />
                   </div>
                 </div>
               </div>
               <div className="col-md-4 col-sm-6 col-12 my-2">
                 <div className="img-div  d-flex align-items-center justify-content-center">
                   <div className="text-center">
-                      {imgUrls[2] && <img src={imgUrls[2]} width="230px" height="230px" className="user-img" />}
-                      {!imgUrls[2] && <label htmlFor="img3"  className="img-label">
-                        <img src={plusIcon} width="70px" />
-                      </label>}
-                      <input type="file" id="img3" className="img-upload" onChange={(e)=>{this.handleImg(e ,2)}} />
+                    {imgUrls[2] && <img src={imgUrls[2]} width="230px" height="230px" className="user-img" />}
+                    {!imgUrls[2] && <label htmlFor="img3" className="img-label">
+                      <img src={plusIcon} width="70px" />
+                    </label>}
+                    <input type="file" id="img3" className="img-upload" onChange={(e) => { this.handleImg(e, 2) }} />
                   </div>
                 </div>
               </div>
 
             </div>
           }
-          {steps===2 && 
+          {steps === 2 &&
             <div>
-                <div>
-                  <h3 className="text-center font-1 mt-1">What Do You Prefer</h3>
+              <div>
+                <h3 className="text-center font-1 mt-1">What Do You Prefer</h3>
+              </div>
+              <div className="row">
+                <div className="col-md-4 col-sm-6 my-5 text-center">
+                  <img src={coffee} width="100%" height="300px" className={bevarages.includes('coffee') ? "bevarages selected" : "bevarages"} onClick={() => { this.selectBev('coffee') }} />
+                  <h3 className="text-center">Coffee</h3>
                 </div>
-                <div className="row">
-                  <div className="col-md-4 col-sm-6 my-5 text-center">
-                    <img src={coffee}  width="100%" height="300px" className={bevarages.includes('coffee') ? "bevarages selected" : "bevarages"} onClick={()=>{this.selectBev('coffee')}} />
-                    <h3 className="text-center">Coffee</h3>
-                  </div>
-                  <div className="col-md-4 col-sm-6 my-5 text-center">
-                    <img src={juice} width="100%" height="300px" className={bevarages.includes('juice') ? "bevarages selected" : "bevarages"} onClick={()=>{this.selectBev('juice')}} />
-                    <h3 className="text-center">Juice</h3>                    
-                  </div>
-                  <div className="col-md-4 col-sm-6 my-5 text-center">
-                    <img src={cocktail} width="100%" height="300px" className={bevarages.includes('cocktail') ? "bevarages selected" : "bevarages"} onClick={()=>{this.selectBev('cocktail')}} />
-                    <h3 className="text-center">cocktail</h3>                    
-                  </div>
+                <div className="col-md-4 col-sm-6 my-5 text-center">
+                  <img src={juice} width="100%" height="300px" className={bevarages.includes('juice') ? "bevarages selected" : "bevarages"} onClick={() => { this.selectBev('juice') }} />
+                  <h3 className="text-center">Juice</h3>
                 </div>
+                <div className="col-md-4 col-sm-6 my-5 text-center">
+                  <img src={cocktail} width="100%" height="300px" className={bevarages.includes('cocktail') ? "bevarages selected" : "bevarages"} onClick={() => { this.selectBev('cocktail') }} />
+                  <h3 className="text-center">cocktail</h3>
+                </div>
+              </div>
 
 
-                <h3 className="text-center font-1 mt-1">Duration For Meeting</h3>
-                <div className="row my-5">
+              <h3 className="text-center font-1 mt-1">Duration For Meeting</h3>
+              <div className="row my-5">
 
-                  <div className="col-md-4 col-sm-6 my-3">
-                    <div className={meetingTime.includes('120min') ? "text-center meeting-time-box selected-time" : "text-center meeting-time-box"} onClick={()=>{this.selectedTime("120min")}}>
-                      <h1>120</h1>
-                      <h3>Minutes</h3>
-                    </div>
+                <div className="col-md-4 col-sm-6 my-3">
+                  <div className={meetingTime.includes('120min') ? "text-center meeting-time-box selected-time" : "text-center meeting-time-box"} onClick={() => { this.selectedTime("120min") }}>
+                    <h1>120</h1>
+                    <h3>Minutes</h3>
                   </div>
-
-                  <div className="col-md-4 col-sm-6 col-12 my-3"> 
-                    <div className={meetingTime.includes('60min') ? "text-center meeting-time-box selected-time" : "text-center meeting-time-box"} onClick={()=>{this.selectedTime("60min")}}>
-                      <h1>60</h1>
-                      <h3>Minutes</h3>
-                    </div>
-                  </div>
-
-                  <div className="col-md-4 col-sm-6 col-12 my-3">
-                    <div className={meetingTime.includes('30min') ? "text-center meeting-time-box selected-time" : "text-center meeting-time-box"} onClick={()=>{this.selectedTime("30min")}}>
-                      <h1>30</h1>
-                      <h3>Minutes</h3>
-                    </div>
-                  </div>
-
                 </div>
 
+                <div className="col-md-4 col-sm-6 col-12 my-3">
+                  <div className={meetingTime.includes('60min') ? "text-center meeting-time-box selected-time" : "text-center meeting-time-box"} onClick={() => { this.selectedTime("60min") }}>
+                    <h1>60</h1>
+                    <h3>Minutes</h3>
+                  </div>
+                </div>
+
+                <div className="col-md-4 col-sm-6 col-12 my-3">
+                  <div className={meetingTime.includes('30min') ? "text-center meeting-time-box selected-time" : "text-center meeting-time-box"} onClick={() => { this.selectedTime("30min") }}>
+                    <h1>30</h1>
+                    <h3>Minutes</h3>
+                  </div>
+                </div>
 
               </div>
+
+
+            </div>
           }
 
-          {steps===3 &&
-          <div>
-            <h1 className="text-center my-3">Your Location</h1>
-            <MyMapComponent
-              isMarkerShown={true}
-              googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
-              loadingElement={<div style={{ height: `100%` , width : '100%' }} />}
-              containerElement={<div style={{ height: `600px` }} />}
-              mapElement={<div style={{ height: `100%` }} />
-            }
-            coords={coords}
-            updateCoords={this.updateCoords}
-            />
-              <div className="text-right my-5 mx-5">
-                <input type="button" value="Finish" className="btn btn-success" onClick={this.setUpProfile} />
+          {steps === 3 &&
+            <div>
+              <h1 className="text-center my-3">Your Location</h1>
+              <MyMapComponent
+                isMarkerShown={true}
+                googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
+                loadingElement={<div style={{ height: `100%`, width: '100%' }} />}
+                containerElement={<div style={{ height: `600px` }} />}
+                mapElement={<div style={{ height: `100%` }} />
+                }
+                coords={coords}
+                updateCoords={this.updateCoords}
+              />
             </div>
-          </div>
-        }
+          }
 
-            <div className="d-flex justify-content-between">
-             {steps !== 0 && steps < 3 &&
-             <div className="my-5">
+          {steps === 4 &&
+            <div className="text-center"> 
+              <h1 className="my-3">Upload Your Profile Picture</h1>
+              {!profilePic && <div className="profile-pic"></div>}
+
+              {profilePic && <div>
+                <img src={profilePic} width="320px" height="320px" style={{borderRadius : '200px'}} />
+              </div>}
+              <div>
+                <label htmlFor="profile-pic">
+                  <p className="btn btn-success my-3 mx-3">Upload</p>
+                </label>
+                  <input type="button" value="Finish" className="btn btn-success" onClick={this.setUpProfile} />
+              </div>
+              <input type="file" id="profile-pic" className="img-upload" onChange={(e)=>{this.uploadProfilePic(e)}}/>
+
+              <div className="text-right my-5 mx-5">
+            </div>
+            </div>
+          }
+
+
+          <div className="d-flex justify-content-between">
+            {steps !== 0 && steps < 4 &&
+              <div className="my-5">
                 <input type="button" value="Back" className="btn btn-success" onClick={this.prevStep} />
               </div>
-             }
-              {steps !== 3 && 
+            }
+            {steps !== 4 &&
               <div className="text-right my-5 mx-5">
                 <input type="button" value="Next" className="btn btn-success" onClick={this.nextStep} />
               </div>}
-            </div>
+              
+          </div>
         </div>
       </div>
     )

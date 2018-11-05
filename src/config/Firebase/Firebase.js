@@ -47,6 +47,16 @@ const profileSaveToFirebase = async (data) => {
     urls.push(url)
   }
 
+  let profilePicUrl;
+  let name = `${Date.now()} - ${userUid}`
+  let message = data.profilePic
+  await storageRef.child(name).putString(message, 'data_url')
+  const url = await storageRef.child(name).getDownloadURL();
+  profilePicUrl = url
+
+
+  
+
   // saving profile to db
   return new Promise((resolve, reject) => {
     db.collection("users").doc(userUid).set({
@@ -56,7 +66,8 @@ const profileSaveToFirebase = async (data) => {
       MeetingTime: data.meetingTime,
       Coords: data.coords,
       UserImages: urls,
-      userUid
+      userUid,
+      profilePicUrl
     }).then((result) => {
       resolve(result)
     }).catch((err) => {
@@ -181,6 +192,7 @@ const gettingNotifications = ()=>{
     
 }
 
+
 export {
   firebase,
   loginWithFirebase,
@@ -190,5 +202,5 @@ export {
   getUserData,
   getOtherUsers,
   savingLikedUserData,
-  gettingNotifications
+  gettingNotifications,
 }

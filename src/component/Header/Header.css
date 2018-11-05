@@ -63,6 +63,11 @@
 .open-menu{
     animation: open-menu .5s 1 0s linear forwards;
 }
+#profile-pic{
+    width: 100px;
+    height: 100px;
+    border-radius: 100px
+}
 
 /* .close-menu{
     animation: close-menu .5s 1 0s linear forwards;
