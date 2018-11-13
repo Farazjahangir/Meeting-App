@@ -109,6 +109,7 @@ const getUserData = () => {
 
 // getting other users
 const getOtherUsers = (data) => {
+  const userUid = firebase.auth().currentUser.uid;
   const usersArr = [] //empty array to save users
   const bevrages = data.Bevarages // current user bev
   const meetingTime = data.MeetingTime // current user meetingTimes
@@ -116,12 +117,11 @@ const getOtherUsers = (data) => {
 
   return new Promise((resolve , reject)=>{
 
-    db.collection("users").get().then(function (querySnapshot) {
+     db.collection("users").get().then(async function (querySnapshot) {
       const userUid = firebase.auth().currentUser.uid;
       querySnapshot.forEach(function (doc) {
         if (doc.id === userUid) return
-        usersArr.push(doc.data())
-        
+        usersArr.push(doc.data())  
       });
       
       usersArr.forEach((user)=>{
@@ -137,6 +137,7 @@ const getOtherUsers = (data) => {
     
           if(isBev && isTime){
             matchedUsers.push(user)  
+            console.log('MATCHED' , matchedUsers);
             resolve(matchedUsers)
           }
       })  
@@ -146,35 +147,74 @@ const getOtherUsers = (data) => {
 }
 
 
-const savingLikedUserData = (data) =>{
+const savingLikedUserData = (meetingDetails) =>{
+  
   let likedUserArr
   
   const userUid = firebase.auth().currentUser.uid;
+  
   db.collection('users').doc(userUid).get()
   .then((doc)=>{
     
     if(doc.data().likedUsers){
       likedUserArr = doc.data().likedUsers
-      likedUserArr.unshift(data.userUid)
+      likedUserArr.unshift(meetingDetails)
       db.collection('users').doc(userUid).update({
           likedUsers : likedUserArr
       })
     }
     else{
       likedUserArr = []
-      likedUserArr.push(data.userUid)
+      likedUserArr.push(meetingDetails)
       db.collection('users').doc(userUid).update({
         likedUsers : likedUserArr
     })
     }
 
-    const otherUserUid = data.userUid
-    console.log("DCUMENT" , doc);
+    const otherUserUid = meetingDetails.likedUserId 
+    let del = delete meetingDetails['likedUserId']  
+    meetingDetails.requestedUserId = userUid
     
-    db.collection('users').doc(otherUserUid).update({
-      notificationFlag : true,
-      notification : firebase.firestore.FieldValue.arrayUnion({Name : `${doc.data().Nickname} wants to meet you` , img : doc.data().UserImages[0]})
-    })
+
+    let meetingRequestArr;
+    db.collection('users').doc(otherUserUid).get()
+      .then((data)=>{
+        console.log('OTherUSer' , data.data());
+        
+          if(data.data().meetingRequests){
+            console.log('If' , data.data().meetingRequests);
+            
+            meetingRequestArr = data.data().meetingRequests
+            meetingRequestArr.unshift(meetingDetails)
+            // db.collection('users').doc(otherUserUid).update({
+            //   meetingRequests : meetingDetails,
+            // })  
+            console.log('if');
+            
+          }
+          else{
+            meetingRequestArr = []
+            meetingRequestArr.push(meetingDetails)
+            console.log('else' , meetingDetails);
+            
+            // db.collection('users').doc(otherUserUid).update({
+            //   meetingRequests : meetingDetails,
+            // })  
+            console.log('else');
+            
+          }
+          db.collection('users').doc(otherUserUid).update({
+            meetingRequests : meetingRequestArr,
+            notificationFlag : true,
+            notification : firebase.firestore.FieldValue.arrayUnion({Name : `${doc.data().Nickname} wants to meet you` , img : doc.data().profilePicUrl})
+          })
+          
+          console.log('UPLOADED');
+        })
+    // db.collection('users').doc(otherUserUid).update({
+    //   notificationFlag : true,
+    //   notification : firebase.firestore.FieldValue.arrayUnion({Name : `${doc.data().Nickname} wants to meet you` , img : doc.data().UserImages[0]})
+    // })
     
   }) 
 }

@@ -47,7 +47,6 @@ class Profile extends Component {
   }
 
   handleImg(e, a) {
-    console.log(e.target.files);
 
     const { imgUrls, imgArr } = this.state
     let reader = new FileReader();
@@ -109,7 +108,6 @@ class Profile extends Component {
       })
     };
     reader.readAsDataURL(e.target.files[0]);
-    console.log(e.target.files);
     
   }
 
@@ -122,7 +120,6 @@ class Profile extends Component {
     this.setState({ finished: true })
     profileSaveToFirebase(this.state).then(() => {
       this.props.history.push('/dashboard')
-      console.log('UPLOADED');
       this.setState({ finished: false })
 
     })
@@ -131,6 +128,8 @@ class Profile extends Component {
 
 
   render() {
+    console.log(this.state);
+    
     const { steps,
       imgUrls,
       nickName,
@@ -142,7 +141,6 @@ class Profile extends Component {
       profilePic,
       profilePicUploaded
     } = this.state
-    console.log("PROFILE" , profilePic === '');
 
     return (
       <div>
@@ -294,12 +292,12 @@ class Profile extends Component {
                 <img src={profilePic} width="320px" height="320px" style={{borderRadius : '200px'}} />
               </div>}
               <div>
-                <label htmlFor="profile-pic">
+                <label htmlFor="upload-pic">
                   <p className="btn btn-success my-3 mx-3">Upload</p>
                 </label>
                   <input type="button" value="Finish" className="btn btn-success" onClick={this.setUpProfile} />
               </div>
-              <input type="file" id="profile-pic" className="img-upload" onChange={(e)=>{this.uploadProfilePic(e)}}/>
+              <input type="file" id="upload-pic" className="img-upload" onChange={(e)=>{this.uploadProfilePic(e)}}/>
 
               <div className="text-right my-5 mx-5">
             </div>

@@ -13,7 +13,7 @@ class Meetingtime extends Component {
         super()
         this.state = {
             date: new Date(),
-            defaultTime : '00:00'
+            meetingTime : '00:00'
         }
         this.sendRequest = this.sendRequest.bind(this)
     }
@@ -25,11 +25,22 @@ class Meetingtime extends Component {
         swal('Send Request',{
             buttons : ['Cancle' , 'Yes']
           })
-          .then((value)=>{
-            if(value){
-                console.log(value);
-                let likedUser = this.props.location.state.userData 
-                savingLikedUserData(likedUser)
+          .then((value)=>{              
+              if(value){
+                const { date , meetingTime } = this.state
+                let likedUserId = this.props.location.state.userData.userUid
+                let meetingPlace = this.props.location.state.place;
+                let destinationCoords = this.props.location.state.destinationCoords;
+                  
+                let meetingDetails = {
+                        date, 
+                        meetingTime, 
+                        destinationCoords, 
+                        meetingPlace,  
+                        likedUserId
+                    }
+                savingLikedUserData(meetingDetails)
+                
         
             //   this.props.history.push('/dashboard')
             }
@@ -41,7 +52,7 @@ class Meetingtime extends Component {
   render() {
       console.log(this.props);
       
-    const { defaultTime } = this.state
+    const { meetingTime } = this.state
     console.log("DESHBOARD");
 
     
@@ -61,8 +72,8 @@ class Meetingtime extends Component {
                 <div className="col-md-5 vertical-center">
                     <div className="time-div">
                         <label for="time">Select Time</label>
-                        <input type='time' value={defaultTime} id="time" className="form-control" onChange={(e)=>{
-                            this.setState({defaultTime : e.target.value})}} />
+                        <input type='time' value={meetingTime} id="time" className="form-control" onChange={(e)=>{
+                            this.setState({meetingTime : e.target.value})}} />
                     </div>
                 </div>
             </div>

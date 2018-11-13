@@ -7,7 +7,7 @@ exports.sendNotification = functions.firestore.document('users/{userId}')
     console.log("CHANGE" , change.after.data().likedUsers);
     console.log("CONTEXT" , context.params.userId);
     
-    const receiverId = change.after.data().likedUsers[0];
+    const receiverId = change.after.data().likedUsers[0].likedUserId;
     const senderId = context.params.userId;
     const name = change.after.data().Nickname;
     const payload = {

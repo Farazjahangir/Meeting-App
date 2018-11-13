@@ -6,7 +6,6 @@ const getNotification = (userUid) => {
     return (dispatch) => {
         db.collection('users').doc(userUid).onSnapshot((snapshot)=>{
             if(snapshot.exists){
-                console.log("SNAPSHOT" , snapshot.data().profilePicUrl);
                         dispatch({
                             type: "GET_NOTIFICATION",
                             notificationFlag: snapshot.data().notificationFlag,

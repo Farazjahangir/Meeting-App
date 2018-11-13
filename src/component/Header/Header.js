@@ -34,7 +34,6 @@ class Header extends Component {
   }
 
   static getDerivedStateFromProps(nextProps){
-    console.log("NEXTPROPS" , nextProps);
     
     
     if(nextProps.notification === undefined){
@@ -73,8 +72,6 @@ class Header extends Component {
 
   render() {
     const { notifications , notified , profilePicUrl } = this.state
-    console.log('NOTIFICATIONS' , this.state.notifications);
-    console.log("RENDER");
     
     
     const { showMenu , notificationShow } = this.state
@@ -91,7 +88,6 @@ class Header extends Component {
         {notificationShow &&
           <div className="notification-div" >
             {notifications.map((value)=>{
-              console.log(value);
               
               return <div className="notification">
                 <img src={value.img} width="30px" height="30px" />
@@ -126,8 +122,6 @@ const mapDispatchToProps = (dispatch) =>{
 }
 
 const mapStateToProps = (state) =>{
-  console.log('reduxstate====>' ,  state);
-  
   return{
     notification : state.notifyReducer.notification,
     notificationFlag : state.notifyReducer.notificationFlag,
