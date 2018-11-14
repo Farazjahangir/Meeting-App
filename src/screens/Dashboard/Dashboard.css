@@ -1,9 +1,49 @@
-
-
-
-
+.users-imgs{
+    width: 135px;
+    height : 135px;
+    position: relative;
+}
+.users-imgs img{
+    width: 100%;
+    height : 100%
+}
+.users-imgs img:hover{
+    cursor: pointer;
+    filter: brightness(30%)
+}
+.users-imgs button{
+    position: absolute;
+    top : 50%;
+    left : 50%;
+    transform: translate(-50% , -50%);
+}
+.show-btn{
+    display: block
+}
+.hide-btn{
+    display: none;
+}
+.brightness{
+    filter: brightness(30%)
+}
+.dis-none{
+    display: none;
+}
+.details-div{
+    position: absolute;
+    top : 50%;
+    left : 50%;
+    width : 400px;
+    height : 430px;
+    padding : 20px;
+    transform: translate(-50%,-50%);
+    background: white;
+    border: 1px solid rgba(211, 211, 211, 0.4);
+    z-index : 1000;
+}
 @media (max-width: 500px){
-    .msg-heading{
-        font-size: 26px
+    .users-imgs{
+        width: 170px;
+        height: 170px;
     }
 }

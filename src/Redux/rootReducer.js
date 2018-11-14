@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
-import authReducer from './Reducers/authReducer'
 import notifyReducer from './Reducers/notifyReducer'
+import meetingReducer from './Reducers/meetingReducer'
 
 export default combineReducers({
-    authReducer,
-    notifyReducer
+    notifyReducer,
+    meetingReducer
 })

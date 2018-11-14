@@ -117,7 +117,7 @@ const getOtherUsers = (data) => {
 
   return new Promise((resolve , reject)=>{
 
-     db.collection("users").get().then(async function (querySnapshot) {
+     db.collection("users").get().then(function (querySnapshot) {
       const userUid = firebase.auth().currentUser.uid;
       querySnapshot.forEach(function (doc) {
         if (doc.id === userUid) return
@@ -228,8 +228,18 @@ const gettingNotifications = ()=>{
         resolve(doc)
       })
 
+  })   
+}
+
+
+const geetingAllMeetingsHistory = ()=>{
+  const userUid = firebase.auth().currentUser.uid;
+  return new Promise((resolve , reject)=>{
+    db.collection('users').doc(userUid).get()
+      .then((doc)=>{
+        resolve(doc)
+      })
   })
-    
 }
 
 
@@ -243,4 +253,5 @@ export {
   getOtherUsers,
   savingLikedUserData,
   gettingNotifications,
+  geetingAllMeetingsHistory
 }
