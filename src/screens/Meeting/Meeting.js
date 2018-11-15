@@ -70,7 +70,7 @@ class Meeting extends Component {
     })
     .then((value)=>{
       if(value){
-        this.props.history.push('/meetingpoint', {data: item})
+        this.props.history.replace('/meetingpoint', {data: item})
       }
       
     })
@@ -93,7 +93,6 @@ class Meeting extends Component {
 
   // when users finished
     userEnd(){
-      console.log("END");
       this.setState({end : true})
     }
   render() {
@@ -107,7 +106,6 @@ class Meeting extends Component {
             isLoading,
             end
           }= this.state;
-        console.log("this.props -->", this.props)
     
     return (
       <div>

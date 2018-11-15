@@ -35,8 +35,10 @@
     box-shadow: 2px 2px black;
     text-align: right;
     width: max-content; 
+    height : 350px;
+    overflow-y: auto;
     margin-left : auto;
-    position: absolute;
+    position: fixed;
     top: 2%;
     right : 0;
     z-index : 1000;

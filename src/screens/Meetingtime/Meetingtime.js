@@ -13,7 +13,7 @@ class Meetingtime extends Component {
         super()
         this.state = {
             date: new Date(),
-            meetingTime : '00:00'
+            meetingTime : '12:00'
         }
         this.sendRequest = this.sendRequest.bind(this)
     }
@@ -37,12 +37,15 @@ class Meetingtime extends Component {
                         meetingTime, 
                         destinationCoords, 
                         meetingPlace,  
-                        likedUserId
+                        likedUserId,
+                        status : 'pending'
                     }
+                    console.log('MEETINGDETAILS' , meetingDetails);
+
                 savingLikedUserData(meetingDetails)
                 
         
-            //   this.props.history.push('/dashboard')
+            //   this.props.history.replace('/dashboard')
             }
             
           })

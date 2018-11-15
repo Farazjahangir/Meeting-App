@@ -36,7 +36,6 @@ class Meetingpoint extends Component {
     }
     componentDidMount() {
         let coords = this.props.location.state.data.Coords
-        console.log("COORDS==>" , coords);
         
         
         RADIUS = 5000
@@ -57,7 +56,6 @@ class Meetingpoint extends Component {
                 return res.json()
             })
             .then((places) => {
-                console.log('PLACEs' , places);
                 this.setState({ location: places, search: true , isLoading: false , originCoords : coords })
 
             })
@@ -89,7 +87,6 @@ class Meetingpoint extends Component {
         
         let distance =  location.location.distance / 1000
         let avgDistance = distance.toFixed(1)
-        console.log(avgDistance);
         
         this.setState({
             selectedPlace : location.name, 
@@ -129,12 +126,11 @@ class Meetingpoint extends Component {
     next(){
         const likedUserData = this.props.location.state.data
         const { selectedPlace , destinationCoords } = this.state
-        this.props.history.push('/meetingTime' , {place : selectedPlace , destinationCoords , userData : likedUserData})
+        this.props.history.replace('/meetingTime' , {place : selectedPlace , destinationCoords , userData : likedUserData})
     }
 
 
     render() {
-        console.log('STATE' , this.state);
         
 
         const { directions ,placeName, location, search , index , locationNotAvailaible , isLoading , originCoords , getDirection} = this.state
