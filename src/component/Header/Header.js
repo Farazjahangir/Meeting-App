@@ -66,7 +66,7 @@ class Header extends Component {
     logOut()
     .then(()=>{
       db.collection('users').doc(userUid).update({userToken : firebase.firestore.FieldValue.delete()})
-      this.props.history.push('/')
+      this.props.history.replace('/')
     })
   }
 
@@ -78,10 +78,10 @@ class Header extends Component {
     return (
       <div>
         <header id="header">
-            <h1>Meeting App</h1>
+            <h2>Meeting App</h2>
             <div>
-              {!notified && <img src={bellIcon} width="35px" className="mx-3" style={{cursor : 'pointer'}} onClick={()=>{this.openNotify()}} />}
-              {notified && <img src={notificationIcon} width="35px" className="mx-3" style={{cursor : 'pointer'}} onClick={()=>{this.openNotify()}} />}
+              {!notified && <img src={bellIcon} width="30px" className="mx-3" style={{cursor : 'pointer'}} onClick={()=>{this.openNotify()}} />}
+              {notified && <img src={notificationIcon} width="30px" className="mx-3" style={{cursor : 'pointer'}} onClick={()=>{this.openNotify()}} />}
               <img src={menuIcon} style={{cursor : 'pointer'}} onClick={()=>{this.setState({showMenu : true})}} />
             </div>
         </header>
@@ -105,8 +105,14 @@ class Header extends Component {
             <img src={profilePicUrl} id="profile-pic" />
           </div>
           <ul>
+          <li className="mx-4 my-4 ">
+              <button className="btn btn-primary" onClick={()=>{this.props.history.replace('/dashboard')}} >Dashboard</button>
+          </li>
+          <li className="mx-4 my-4 ">
+              <button className="btn btn-primary" onClick={()=>{this.props.history.replace('/meeting')}} >Set A Meeting</button>
+          </li>
             <li className="mx-4 my-4 ">
-              <button className="btn btn-primary" onClick={this.signOut} >SignOut</button>
+              <button className="btn btn-danger" onClick={this.signOut} >SignOut</button>
             </li>
           </ul>
         </nav>
