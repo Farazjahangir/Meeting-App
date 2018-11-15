@@ -89,7 +89,6 @@ const checkingUser = () => {
       resolve(doc)
     })
       .catch(function (error) {
-        console.log("Error getting document:", error);
       });
 
   })
@@ -99,7 +98,6 @@ const checkingUser = () => {
 const getUserData = () => {
 
   const userUid = firebase.auth().currentUser.uid;
-  console.log("current user -->", firebase.auth().currentUser);
   return new Promise((resolve, reject) => {
     db.collection("users").doc(userUid).get().then((doc) => {
       resolve(doc.data())
@@ -137,7 +135,6 @@ const getOtherUsers = (data) => {
     
           if(isBev && isTime){
             matchedUsers.push(user)  
-            console.log('MATCHED' , matchedUsers);
             resolve(matchedUsers)
           }
       })  
@@ -148,6 +145,7 @@ const getOtherUsers = (data) => {
 
 
 const savingLikedUserData = (meetingDetails) =>{
+  
   
   let likedUserArr
   
@@ -170,38 +168,42 @@ const savingLikedUserData = (meetingDetails) =>{
         likedUsers : likedUserArr
     })
     }
+    doc.data().meetingRequests.map((val , i)=>{
+      console.log("likedid" , val.requestedUserId);
+      console.log("reuestID" , meetingDetails.likedUserId);
+      if(doc.data().meetingRequests &&  val.requestedUserId === meetingDetails.likedUserId){
+        console.log('It Matched'); 
+        // db.collection('users').doc(doc.id).get()
+        //   .then((user)=>{
+        //     console.log("=====>1" , user.data().likedUsers[i]); 
+        //   })
+        //   db.collection('users').doc(meetingDetails.likedUserId).get()
+        //   .then((user)=>{
+        //     console.log("====>2" , user.data()); 
+        //   })
+      }
+
+    })
 
     const otherUserUid = meetingDetails.likedUserId 
     let del = delete meetingDetails['likedUserId']  
     meetingDetails.requestedUserId = userUid
     
 
+
+    
     let meetingRequestArr;
     db.collection('users').doc(otherUserUid).get()
       .then((data)=>{
-        console.log('OTherUSer' , data.data());
         
           if(data.data().meetingRequests){
-            console.log('If' , data.data().meetingRequests);
             
             meetingRequestArr = data.data().meetingRequests
             meetingRequestArr.unshift(meetingDetails)
-            // db.collection('users').doc(otherUserUid).update({
-            //   meetingRequests : meetingDetails,
-            // })  
-            console.log('if');
-            
           }
           else{
             meetingRequestArr = []
             meetingRequestArr.push(meetingDetails)
-            console.log('else' , meetingDetails);
-            
-            // db.collection('users').doc(otherUserUid).update({
-            //   meetingRequests : meetingDetails,
-            // })  
-            console.log('else');
-            
           }
           db.collection('users').doc(otherUserUid).update({
             meetingRequests : meetingRequestArr,
@@ -209,13 +211,9 @@ const savingLikedUserData = (meetingDetails) =>{
             notification : firebase.firestore.FieldValue.arrayUnion({Name : `${doc.data().Nickname} wants to meet you` , img : doc.data().profilePicUrl})
           })
           
-          console.log('UPLOADED');
         })
-    // db.collection('users').doc(otherUserUid).update({
-    //   notificationFlag : true,
-    //   notification : firebase.firestore.FieldValue.arrayUnion({Name : `${doc.data().Nickname} wants to meet you` , img : doc.data().UserImages[0]})
-    // })
-    
+        
+        
   }) 
 }
 
