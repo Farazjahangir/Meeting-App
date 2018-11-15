@@ -5,6 +5,7 @@ import '../../App.css'
 import { firebase, geetingAllMeetingsHistory } from '../../config/Firebase/Firebase'
 import { connect } from 'react-redux'
 import gettingMeetings from '../../Redux/Actions/meetingActions';
+import downArrow from '../../images/down-arrow.png'
 
 const db = firebase.firestore()
 
@@ -17,9 +18,11 @@ class Dashboard extends Component {
       meetingData: false,
       isStyle: false,
       inex: '',
-      showDetails: false
+      showDetails: false,
+      likedUserList : false
     }
     this.setMeeting = this.setMeeting.bind(this)
+    this.showLikedUsersList = this.showLikedUsersList.bind(this)
   }
 
   componentDidMount() {
@@ -81,9 +84,28 @@ class Dashboard extends Component {
   setMeeting() {
     this.props.history.push('/meeting')
   }
+
+
+  showLikedUsersList(){
+    console.log('sjhdsad');
+    
+    const { likedUserList } = this.state
+
+
+    if(likedUserList === false){
+      this.setState({likedUserList : true})
+      console.log(likedUserList);
+    }
+    else if(likedUserList === true){
+      this.setState({likedUserList : false})
+      console.log(likedUserList);
+    }
+    
+
+  }
   render() {
 
-    const { meetings, requestedUsers, meetingData, isStyle, index, showDetails } = this.state
+    const { meetings, requestedUsers, meetingData, isStyle, index, showDetails, likedUserList } = this.state
 
     return (
       <div>
@@ -93,9 +115,14 @@ class Dashboard extends Component {
           <button className="btn btn-success" onClick={this.setMeeting}>Go Set A Meeting</button>
         </div>}
 
-        {meetingData && <div className="container-fluid my-6">
-          <div className="row">
-            {requestedUsers.map((val, i) => {
+        {<div className="liked-users">
+          <p>Liked Users List</p>
+          <img src={downArrow} onClick={this.showLikedUsersList} />
+
+        </div>}
+        {meetingData && <div className="container-fluid">
+          <div className="row meeting-data">
+            {likedUserList && requestedUsers.map((val, i) => {
               console.log("LOOP", val);
 
               return <div className="col-sm-3 col-6" style={{position : 'static'}}>
@@ -105,6 +132,7 @@ class Dashboard extends Component {
                     <button className={i === index && isStyle ? "btn btn-primary btn-sm show-btn " : 'hide-btn'} onMouseOver={() => { this.setState({ isStyle: true, index: i }) }} onMouseOut={() => { this.setState({ isStyle: false }) }} onClick={() => { this.setState({ showDetails: true }) }}>Details</button>
                   </div>
                   <p className="mx-2">{val.Nickname}</p>
+
 
                   {i===index && showDetails && <div className="details-div">
                     <ul className="list-group">
