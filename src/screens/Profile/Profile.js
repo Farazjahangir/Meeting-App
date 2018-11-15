@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import swal from 'sweetalert'
 import '../../App.css'
 import 'rc-steps/assets/index.css';
 import 'rc-steps/assets/iconfont.css';
@@ -38,8 +39,38 @@ class Profile extends Component {
   }
 
   nextStep() {
-    const { steps } = this.state
-    this.setState({ steps: steps + 1 })
+      const {steps,
+            nickName,
+            contactNum,
+            imgUrls, 
+            bevarages,
+            meetingTime,
+            coords,
+          } = this.state
+
+          console.log("STEP1", nickName == '' && contactNum == '');
+          
+    if(steps === 0 && nickName !== '' && contactNum !== ''){
+      this.setState({ steps: steps + 1 })
+      return
+    }  
+    if(steps === 1 && imgUrls.indexOf(null) === -1){
+      this.setState({ steps: steps + 1 })
+      return
+    }
+    if(steps === 2 && bevarages.length !== 0 && meetingTime.length !== 0){
+      this.setState({ steps: steps + 1 })
+      return
+    }
+    if(steps === 3 && coords){
+      this.setState({ steps: steps + 1 })
+      return
+    }
+
+    else{
+     swal("Error" , 'All Fields Are Required')
+      
+    }
   }
   prevStep() {
     const { steps } = this.state
@@ -117,6 +148,11 @@ class Profile extends Component {
   }
 
   setUpProfile() {
+    const { profilePic } = this.state
+    if(profilePic === ''){
+      swal('Error' , 'Profile Picture Required')
+      return
+    }
     this.setState({ finished: true })
     profileSaveToFirebase(this.state).then(() => {
       this.props.history.push('/dashboard')
@@ -128,7 +164,6 @@ class Profile extends Component {
 
 
   render() {
-    console.log(this.state);
     
     const { steps,
       imgUrls,
